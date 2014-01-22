@@ -1,0 +1,262 @@
+{
+    "flashicon": "http://code.mios.com/trac/mios_arduino-sensor/raw-attachment/wiki/WikiStart/RelayNode48.png",
+    "imgIconBody": "", 
+    "imgIconDimmable": "",
+    "imgIconTurnable": "",
+    "imgIconMin": "",
+    "imgIconMax": "",
+    "halloIconsDir": "pics/hallo",
+    "inScene": "0",
+    "DisplayStatus": {
+    },
+    "doc_url": {
+        "doc_language": 1,
+        "doc_manual": 1,
+        "doc_version": 1,
+        "doc_platform": 0,
+        "doc_page": "sensors"
+    },
+    "Tabs": [
+        {
+            "Label": {
+                "lang_tag": "tabname_control",
+                "text": "Settings"
+            },
+            "Position": "0",
+            "TabType": "flash",
+            "ControlGroup": [
+                {
+                    "id": "1",
+                    "scenegroup": "1"
+                },
+                {
+                    "id": "2",
+                    "scenegroup": "2",
+                    "isSingle": "1"
+                    
+                }            
+            ],
+            "SceneGroup": [
+                {
+                    "id": "1",
+                    "top": "1.4",
+                    "left": "0.3",
+                    "x": "3",
+                    "y": "2"
+                },
+                {
+                    "id": "2",
+                    "top": "2",
+                    "left": "0.15",
+                    "x": "3",
+                    "y": "3"
+                }
+            ],
+            "Control": [
+    	    	  {
+                    "ControlGroup": "1",
+                    "ControlType": "label",
+                    "text_align": "right",
+                    "top": "0",
+                    "left": "-0.8",
+	                "x": "1.5",
+                    "y": "1",	
+                    "Label": {
+                        "lang_tag": "gateway_version",
+                        "text": "Lib Version:"
+                    },
+                    "Display": {
+                        "Top": 75,
+                        "Left": 25,
+                        "Width": 150,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlGroup": "1",
+                    "ControlType": "variable",
+                    "text_align": "left",
+                    "top": "0",
+                    "left": "0.72",
+	                "x": "2",
+                    "y": "1",	
+                    "Display": {
+                        "Service": "urn:upnp-arduino-cc:serviceId:arduinonode1",
+                        "Variable": "ArduinoLibVersion",
+                        "Value": "1",
+                        "Top": 75,
+                        "Left": 110,
+                        "Width": 100,
+                        "Height": 20 
+                    }
+                },
+
+
+   	  			{
+                    "ControlGroup": "1",
+                    "ControlType": "label",
+                    "text_align": "right",
+                    "top": "0.8",
+                    "left": "-0.8",
+	                "x": "1.5",
+                    "y": "1",	
+                    "Label": {
+                        "lang_tag": "relay_label",
+                        "text": "Parent node:"
+                    },
+                    "Display": {
+                        "Top": 95,
+                        "Left": 25,
+                        "Width": 150,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlGroup": "1",
+                    "ControlType": "variable",
+                    "text_align": "left",
+                    "top": "0.8",
+                    "left": "0.72",
+	                "x": "2",
+                    "y": "1",	
+                    "Display": {
+                        "Service": "urn:upnp-arduino-cc:serviceId:arduinonode1",
+                        "Variable": "RelayNodeHR",
+                        "Value": "1",
+                        "Top": 95,
+                        "Left": 110,
+                        "Width": 100,
+                        "Height": 20 
+                    }
+                },
+
+                {
+                    "ControlType": "label",
+                    "text_align": "left",
+                    "top": "0.65",
+                    "left": "-0.3",
+	                "x": "2.25",
+                    "y": "1",	
+                    "Label": {
+                        "lang_tag": "neighbors",
+                        "text": "Child nodes"
+                    },
+                    "Display": {
+                        "Top": 23,
+                        "Left": 25,
+                        "Width": 150,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlType": "button",
+                    "top": "0.4",
+                    "left": "1",
+                    
+                    "Label": {
+                            "lang_tag": "fetch_child_routes",
+                            "text": "Fetch"
+                        },
+                     "Display": {
+                            "Service": "urn:upnp-arduino-cc:serviceId:arduinonode1",
+                            "Variable": "Children",
+                            "Value": "Fetching...",
+                            "Top": 15,
+                            "Left": 110,
+                            "Width": 80,
+                            "Height": 20
+                        },
+                     "Command": { 
+                            "Service": "urn:upnp-arduino-cc:serviceId:arduinonode1", 
+                            "Action": "FetchChildren", 
+                            "Parameters": [] 
+                        } 
+                },
+
+
+			    {
+                    "ControlType": "button",
+                    "top": "0.4",
+                    "left": "1",
+                    
+                    "Label": {
+                            "lang_tag": "clear_child_routes",
+                            "text": "Clear"
+                        },
+                     "Display": {
+                            "Service": "urn:upnp-arduino-cc:serviceId:arduinonode1",
+                            "Variable": "Children",
+                            "Value": "Clearing...",
+                            "Top": 15,
+                            "Left": 200,
+                            "Width": 80,
+                            "Height": 20
+                        },
+                     "Command": { 
+                            "Service": "urn:upnp-arduino-cc:serviceId:arduinonode1", 
+                            "Action": "ClearChildren", 
+                            "Parameters": [] 
+                        } 
+                },
+
+			    {
+                    "ControlType": "button",
+                    "top": "0.4",
+                    "left": "1",
+                    
+                    "Label": {
+                            "lang_tag": "refresh_relay",
+                            "text": "Reload"
+                        },
+                     "Display": {
+                            "Service": "urn:upnp-arduino-cc:serviceId:arduinonode1",
+                            "Variable": "RelayNodeHR",
+                            "Value": "Refreshing...",
+                            "Top": 92,
+                            "Left": 200,
+                            "Width": 80,
+                            "Height": 20
+                        },
+                     "Command": { 
+                            "Service": "urn:upnp-arduino-cc:serviceId:arduinonode1", 
+                            "Action": "RefreshRelay", 
+                            "Parameters": [] 
+                        } 
+                },
+
+
+
+                {
+                    "ControlType": "variable",
+                    "text_align": "left",
+                    "top": "1.5",
+                    "left": "-0.3",
+	                "x": "2.25",
+                    "y": "1",	
+                    "Display": {
+                        "Service": "urn:upnp-arduino-cc:serviceId:arduinonode1",
+                        "Variable": "Children",
+                        "Value": "",
+                        "Top": 45,
+                        "Left": 25,
+                        "Width": 300,
+                        "Height": 20 
+                    } 
+                }
+                
+            ]
+        },
+        {
+            "Label": {
+                "lang_tag": "advanced",
+                "text": "Advanced"
+            },
+            "Position": "1",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "advanced_device"
+        }
+    ],
+    "DeviceType": "urn:schemas-arduino-cc:device:arduinonode:1"
+}
+                

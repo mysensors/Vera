@@ -1,0 +1,148 @@
+{
+    "flashicon": "http://code.mios.com/trac/mios_arduino-sensor/raw-attachment/wiki/WikiStart/ArduinoNode48.png",
+    "imgIconBody": "", 
+    "imgIconDimmable": "",
+    "imgIconTurnable": "",
+    "imgIconMin": "",
+    "imgIconMax": "",
+    "halloIconsDir": "pics/hallo",
+    "inScene": "0",
+    "DisplayStatus": {
+    },
+    "doc_url": {
+        "doc_language": 1,
+        "doc_manual": 1,
+        "doc_version": 1,
+        "doc_platform": 0,
+        "doc_page": "sensors"
+    },
+    "Tabs": [
+        {
+            "Label": {
+                "lang_tag": "tabname_control",
+                "text": "Settings"
+            },
+            "Position": "0",
+            "TabType": "flash",
+            "ControlGroup": [
+                {
+                    "id": "1",
+                    "scenegroup": "1"
+                },
+                {
+                    "id": "2",
+                    "scenegroup": "2",
+                    "isSingle": "1"
+                    
+                }            
+            ],
+            "SceneGroup": [
+                {
+                    "id": "1",
+                    "top": "1.4",
+                    "left": "0.3",
+                    "x": "3",
+                    "y": "2"
+                },
+                {
+                    "id": "2",
+                    "top": "2",
+                    "left": "0.15",
+                    "x": "3",
+                    "y": "3"
+                }
+            ],
+            "Control": [
+    	    	  {
+                    "ControlGroup": "1",
+                    "ControlType": "label",
+                    "text_align": "right",
+                    "top": "0",
+                    "left": "-0.8",
+	                "x": "1.5",
+                    "y": "1",	
+                    "Label": {
+                        "lang_tag": "gateway_version",
+                        "text": "Lib Version:"
+                    },
+                    "Display": {
+                        "Top": 75,
+                        "Left": 25,
+                        "Width": 150,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlGroup": "1",
+                    "ControlType": "variable",
+                    "text_align": "left",
+                    "top": "0",
+                    "left": "0.72",
+	                "x": "2",
+                    "y": "1",	
+                    "Display": {
+                        "Service": "urn:upnp-arduino-cc:serviceId:arduinonode1",
+                        "Variable": "ArduinoLibVersion",
+                        "Value": "1",
+                        "Top": 75,
+                        "Left": 110,
+                        "Width": 100,
+                        "Height": 20 
+                    }
+                },
+
+
+   	  			{
+                    "ControlGroup": "1",
+                    "ControlType": "label",
+                    "text_align": "right",
+                    "top": "0.8",
+                    "left": "-0.8",
+	                "x": "1.5",
+                    "y": "1",	
+                    "Label": {
+                        "lang_tag": "relay_label",
+                        "text": "Parent node:"
+                    },
+                    "Display": {
+                        "Top": 95,
+                        "Left": 25,
+                        "Width": 150,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlGroup": "1",
+                    "ControlType": "variable",
+                    "text_align": "left",
+                    "top": "0.8",
+                    "left": "0.72",
+	                "x": "2",
+                    "y": "1",	
+                    "Display": {
+                        "Service": "urn:upnp-arduino-cc:serviceId:arduinonode1",
+                        "Variable": "RelayNodeHR",
+                        "Value": "1",
+                        "Top": 95,
+                        "Left": 110,
+                        "Width": 100,
+                        "Height": 20 
+                    }
+                }
+                
+            ]
+        },
+        {
+            "Label": {
+                "lang_tag": "advanced",
+                "text": "Advanced"
+            },
+            "Position": "1",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "advanced_device"
+        }
+    ],
+    "DeviceType": "urn:schemas-arduino-cc:device:arduinonode:1"
+}
+                

@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<implementation>
+  <functions>
+	local p
+	
+	function startup(lul_device)
+		luup.log("Arduino plugin: loading library L_Arduino ...")
+		if (package.path:find ("/etc/cmh-ludl/?.lua;/etc/cmh-lu/?.lua", 1, true) == nil) then
+			package.path = package.path .. ";/etc/cmh-ludl/?.lua;/etc/cmh-lu/?.lua"
+		end
+
+		package.loaded.L_Arduino = nil
+		p = require("L_Arduino")
+		if (package.loaded.L_Arduino == nil)
+		then
+			luup.log("Arduino plugin: plugin is not installed correctly. Library L_Arduino cannot be loaded.", 1)
+			luup.task("Plugin not correctly installed", 2, "Arduino plugin", -1)
+			return false
+		end
+
+		luup.log("Arduino plugin: library L_Arduino loaded")
+
+		return p.startup(lul_device)
+	end
+  </functions>
+
+  <incoming>
+    <lua>if (p ~= nil) then p.processIncoming(lul_data) end</lua>
+  </incoming>
+
+  <startup>startup</startup>
+  <actionList>
+    <action>
+  		<serviceId>urn:upnp-org:serviceId:SwitchPower1</serviceId>
+  		<name>SetTarget</name>
+  		<run>if (p ~= nil) then p.switchPower(lul_device, lul_settings.newTargetValue) end</run>
+    </action>
+    <action>
+  		<serviceId>urn:upnp-org:serviceId:Dimming1</serviceId>
+  		<name>SetLoadLevelTarget</name>
+  		<run>if (p ~= nil) then p.setDimmerLevel(lul_device, lul_settings.newLoadlevelTarget) end</run>
+    </action>    
+   <action>
+  		<serviceId>urn:upnp-org:serviceId:WindowCovering1</serviceId>
+  		<name>Up</name>
+  		<run>if (p ~= nil) then p.windowCovering(lul_device, "UP") end</run>
+    </action>
+    <action>
+  		<serviceId>urn:upnp-org:serviceId:WindowCovering1</serviceId>
+  		<name>Down</name>
+  		<run>if (p ~= nil) then p.windowCovering(lul_device, "DOWN") end</run>
+    </action>
+    <action>
+  		<serviceId>urn:upnp-org:serviceId:WindowCovering1</serviceId>
+  		<name>Stop</name>
+  		<run>if (p ~= nil) then p.windowCovering(lul_device, "STOP") end</run>
+    </action>
+    <action>
+    	<serviceId>urn:micasaverde-com:serviceId:SecuritySensor1</serviceId>
+    	<name>SetArmed</name>
+    	<run>if (p ~= nil) then p.setArmed(lul_device, lul_settings.newArmedValue) end</run>
+    </action>
+    <action>
+  		<serviceId>urn:upnp-arduino-cc:serviceId:arduino1</serviceId>
+  		<name>SendCommand</name>
+  		<run>if (p ~= nil) then p.sendCommand(lul_settings.radioId, lul_settings.variableId, lul_settings.value) end</run>
+    </action>
+    <action>
+  		<serviceId>urn:upnp-arduino-cc:serviceId:arduinonode1</serviceId>
+  		<name>SendNodeCommand</name>
+  		<run>if (p ~= nil) then p.sendNodeCommand(lul_device, lul_settings.variableId, lul_settings.value) end</run>
+    </action>
+
+    <action>
+  		<serviceId>urn:upnp-arduino-cc:serviceId:arduinonode1</serviceId>
+  		<name>FetchChildren</name>
+  		<run>if (p ~= nil) then p.fetchChildren(lul_device) end</run>
+    </action>
+
+    <action>
+  		<serviceId>urn:upnp-arduino-cc:serviceId:arduinonode1</serviceId>
+  		<name>ClearChildren</name>
+  		<run>if (p ~= nil) then p.clearChildren(lul_device) end</run>
+    </action>
+
+    <action>
+  		<serviceId>urn:upnp-arduino-cc:serviceId:arduinonode1</serviceId>
+  		<name>RefreshRelay</name>
+  		<run>if (p ~= nil) then p.refreshRelay(lul_device) end</run>
+    </action>
+
+    <action>
+  		<serviceId>urn:upnp-arduino-cc:serviceId:arduino1</serviceId>
+  		<name>SetUnit</name>
+  		<run>if (p ~= nil) then p.setUnit(lul_settings.unit) end</run>
+    </action>
+
+    <action>
+  		<serviceId>urn:upnp-arduino-cc:serviceId:arduino1</serviceId>
+  		<name>StartInclusion</name>
+  		<run>if (p ~= nil) then p.startInclusion(lul_device) end</run>
+    </action>
+    <action>
+  		<serviceId>urn:upnp-arduino-cc:serviceId:arduino1</serviceId>
+  		<name>StopInclusion</name>
+  		<run>if (p ~= nil) then p.stopInclusion(lul_device) end</run>
+    </action>
+    
+
+
+    <action>
+  		<serviceId>urn:upnp-org:serviceId:ArduinoIr1</serviceId>
+  		<name>SendIrCommand</name>
+  		<run>if (p ~= nil) then p.sendIrCommand(lul_device, lul_settings.irCodeNumber) end</run>
+    </action>
+    
+  </actionList>
+</implementation>
