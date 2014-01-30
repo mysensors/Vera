@@ -473,7 +473,6 @@ function string:split(delimiter)
 end
 
 function processIncoming(s)
-	log("Received: ".. s)
 	local incomingData = s:split(";")
 	if (#incomingData >=4) then
 		local nodeId = incomingData[1]
@@ -483,10 +482,13 @@ function processIncoming(s)
 		local device = childIdLookupTable[altId] 
 
 		if (messageType==msgType.SET_VARIABLE) then
+			log("Set Var: ".. s)
 			setVariable(incomingData, device, nodeId)
 		elseif (messageType==msgType.PRESENTATION) then
+			log("Presentation: ".. s)
 			presentation(incomingData, device, childId, altId)
 		elseif (messageType==msgType.REQ_VARIABLE) then
+			log("Request: ".. s)
 			requestStatus(incomingData, device, altId)
 		elseif (messageType == msgType.INTERNAL) then
 			processInternalMessage(incomingData, device, altId)
