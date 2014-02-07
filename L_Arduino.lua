@@ -4,14 +4,18 @@ module("L_Arduino", package.seeall)
 -- Arduino Gateway 
 -- 
 -- Created by Henrik Ekblad <henrik.ekblad@gmail.com>
+--
+-- Ethernet contribution by A-lurker
 --	
 -- This program is free software; you can redistribute it and/or
 -- modify it under the terms of the GNU General Public License
 -- version 2 as published by the Free Software Foundation.
 --
   
+local PLUGIN_NAME = "Arduino"
 local PLUGIN_VERSION = "1.2+"
 local GATEWAY_VERSION = ""
+local IP_PORT = "5003"
 local BAUD_RATE = "115200"
 local ARDUINO_SID = "urn:upnp-arduino-cc:serviceId:arduino1"
 local VARIABLE_CONTAINER_SID = "urn:upnp-org:serviceId:VContainer1"
@@ -503,26 +507,39 @@ function startup(lul_device)
 	ARDUINO_DEVICE = lul_device
 
 	setVariableIfChanged(ARDUINO_SID, "PluginVersion", PLUGIN_VERSION, ARDUINO_DEVICE)
-	local IOdevice = luup.variable_get("urn:micasaverde-com:serviceId:HaDevice1", "IODevice", ARDUINO_DEVICE)
-	if ((luup.io.is_connected(ARDUINO_DEVICE) == false) or (IOdevice == nil)) then
-		log("Serial port not connected. First choose the serial port and restart the lua engine.", 1)
-		task("Choose the Serial Port", TASK_ERROR_PERM)
-		return false
-	end
 
-	log("Serial port is connected")
-	
-	-- Check serial settings
-	local baud = luup.variable_get("urn:micasaverde-org:serviceId:SerialPort1", "baud", tonumber(IOdevice))
-	if ((baud == nil) or (baud ~= BAUD_RATE)) then
-		log("Incorrect setup of the serial port. Select ".. BAUD_RATE .." bauds.", 1)
-		task("Select ".. BAUD_RATE .." bauds for the Serial Port", TASK_ERROR_PERM)
-		return false
-	end
-	log("Baud is ".. BAUD_RATE)
+ 	local ipa = luup.devices[ARDUINO_DEVICE].ip
+    
+    local ipAddress = string.match(ipa, '^(%d%d?%d?%.%d%d?%d?%.%d%d?%d?%.%d%d?%d?)')
+    local ipPort    = string.match(ipa, ':(%d+)$')
+    
+    if (ipAddress ~= nil) then
+       if (ipPort == nil) then ipPort = IP_PORT end
 
-	log("Startup complete", 2)
+	   log('Using network connection: IP address is '..ipAddress..':'..ipPort)
+       luup.io.open(ARDUINO_DEVICE, ipAddress, ipPort)
 
+    else -- use serial
+       log('Trying for a serial connection')
+
+	   local IOdevice = luup.variable_get("urn:micasaverde-com:serviceId:HaDevice1", "IODevice", ARDUINO_DEVICE)
+	   if ((luup.io.is_connected(ARDUINO_DEVICE) == false) or (IOdevice == nil)) then
+	   	log("Serial port not connected. First choose the serial port and restart the lua engine.", 1)
+	   	task("Choose the Serial Port", TASK_ERROR_PERM)
+	   	return false
+	   end
+
+	   log("Serial port is connected")
+
+	   -- Check serial settings
+	   local baud = luup.variable_get("urn:micasaverde-org:serviceId:SerialPort1", "baud", tonumber(IOdevice))
+	   if ((baud == nil) or (baud ~= BAUD_RATE)) then
+	   	log("Incorrect setup of the serial port. Select ".. BAUD_RATE .." bauds.", 1)
+	   	task("Select ".. BAUD_RATE .." bauds for the Serial Port", TASK_ERROR_PERM)
+	   	return false
+	   end
+	   log("Baud is ".. BAUD_RATE)
+    end
 
 	for i=1,MAX_RADIO_ID do 
 		availableIds[i] = true;
