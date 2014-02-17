@@ -104,6 +104,7 @@ local tVarTypes = {
 	IR_RECEIVE = 	{33, "urn:upnp-org:serviceId:ArduinoIr1", "IrCode", ""},
 	FLOW = 			{34, "urn:micasaverde-com:serviceId:WaterMetering1", "Flow", "" },
 	VOLUME = 		{35, "urn:micasaverde-com:serviceId:WaterMetering1", "Volume", "0" },
+	LOCK = 		    {36, "urn:micasaverde-com:serviceId:DoorLock1", "Status", ""}
 }
 
 
