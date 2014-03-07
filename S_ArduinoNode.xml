@@ -25,6 +25,16 @@
     	<sendEventsAttribute>no</sendEventsAttribute>
     	<dataType>string</dataType>
     </stateVariable>
+    <stateVariable>
+    	<name>SketchName</name>
+    	<sendEventsAttribute>no</sendEventsAttribute>
+    	<dataType>string</dataType>
+    </stateVariable>
+    <stateVariable>
+    	<name>SketchVersion</name>
+    	<sendEventsAttribute>no</sendEventsAttribute>
+    	<dataType>string</dataType>
+    </stateVariable>
  </serviceStateTable>
  <actionList>
 	<action>
