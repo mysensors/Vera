@@ -123,7 +123,9 @@ local tInternalTypes = {
     PING_ACK =      {10, nil, nil, nil },
     LOG_MESSAGE =   {11, nil, nil, nil },
     CHILDREN =  	{12, "urn:upnp-arduino-cc:serviceId:arduinonode1", "Children", "0"},
- 	UNIT =			{13, "urn:upnp-arduino-cc:serviceId:arduino1", "Unit", "M"}  -- M = Metric / I = Imperial
+ 	UNIT =			{13, "urn:upnp-arduino-cc:serviceId:arduino1", "Unit", "M"},  -- M = Metric / I = Imperial
+	SKETCH_NAME    = {14, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchName", ""},
+	SKETCH_VERSION = {15, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchVersion", ""}
 }
 
 
@@ -222,11 +224,14 @@ local function processInternalMessage(incomingData, iChildId, iAltId)
 	local index = tonumber(incomingData[4]);
 	local varType = tInternalLookupNumType[index]
 	local var = tInternalTypes[varType]
-	
+
 	if (varType == "VERSION" and iAltId == "0;0") then
 		-- Store version of Arduino Gateway
 		GATEWAY_VERSION = data
 		setVariableIfChanged(ARDUINO_SID, "ArduinoLibVersion", GATEWAY_VERSION, ARDUINO_DEVICE)
+    	elseif (varType == "SKETCH_NAME" or varType == "SKETCH_VERSION") then
+        	-- Store the Sketch name and Version
+        	setVariableIfChanged(var[2], var[3], data, iChildId)
 	elseif (varType == "TIME") then
 		-- Request time was sent from one of the sensors
 		sendInternalCommand(iAltId,"TIME",os.time() + 3600 * luup.timezone)

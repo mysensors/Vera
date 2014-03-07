@@ -39,9 +39,9 @@
             "SceneGroup": [
                 {
                     "id": "1",
-                    "top": "1.4",
-                    "left": "0.3",
-                    "x": "3",
+                    "top": "0",
+                    "left": "0.1",
+                    "x": "1.5",
                     "y": "2"
                 },
                 {
@@ -53,18 +53,18 @@
                 }
             ],
             "Control": [
-    	    	  {
+            	{
                     "ControlGroup": "1",
                     "ControlType": "label",
                     "text_align": "right",
-                    "top": "0",
-                    "left": "-0.8",
-	                "x": "1.5",
-                    "y": "1",	
                     "Label": {
-                        "lang_tag": "gateway_version",
-                        "text": "Lib Version:"
+                        "lang_tag": "sketch_name",
+                        "text": "Sketch Name:"
                     },
+                    "top": "0.4",
+                    "left": "-0.8",
+	                "x": "1.35",
+                    "y": "1",	
                     "Display": {
                         "Top": 75,
                         "Left": 25,
@@ -76,15 +76,89 @@
                     "ControlGroup": "1",
                     "ControlType": "variable",
                     "text_align": "left",
-                    "top": "0",
-                    "left": "0.72",
+                    "top": "0.4",
+                    "left": "0.6",
+	                "x": "2",
+                    "y": "1",	
+                    "Display": {
+                        "Service": "urn:upnp-arduino-cc:serviceId:arduinonode1",
+                        "Variable": "SketchName",
+                        "Value": "1",
+                        "Top": 75,
+                        "Left": 110,
+                        "Width": 100,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlGroup": "1",
+                    "ControlType": "label",
+                    "text_align": "right",
+                    "Label": {
+                        "lang_tag": "sketch_version",
+                        "text": "Sketch Version:"
+                    },
+                    "top": "1.1",
+                    "left": "-0.9",
+	                "x": "1.45",
+                    "y": "1",	
+                    "Display": {
+                        "Top": 95,
+                        "Left": 25,
+                        "Width": 150,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlGroup": "1",
+                    "ControlType": "variable",
+                    "text_align": "left",
+                    "top": "1.1",
+                    "left": "0.6",
+	                "x": "2",
+                    "y": "1",	
+                    "Display": {
+                        "Service": "urn:upnp-arduino-cc:serviceId:arduinonode1",
+                        "Variable": "SketchVersion",
+                        "Value": "1",
+                        "Top": 95,
+                        "Left": 110,
+                        "Width": 100,
+                        "Height": 20 
+                    }
+                },
+    	    	{
+                    "ControlGroup": "1",
+                    "ControlType": "label",
+                    "text_align": "right",
+                    "top": "1.8",
+                    "left": "-0.8",
+	                "x": "1.35",
+                    "y": "1",	
+                    "Label": {
+                        "lang_tag": "gateway_version",
+                        "text": "Lib Version:"
+                    },
+                    "Display": {
+                        "Top": 115,
+                        "Left": 25,
+                        "Width": 150,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlGroup": "1",
+                    "ControlType": "variable",
+                    "text_align": "left",
+                    "top": "1.8",
+                    "left": "0.6",
 	                "x": "2",
                     "y": "1",	
                     "Display": {
                         "Service": "urn:upnp-arduino-cc:serviceId:arduinonode1",
                         "Variable": "ArduinoLibVersion",
                         "Value": "1",
-                        "Top": 75,
+                        "Top": 115,
                         "Left": 110,
                         "Width": 100,
                         "Height": 20 
@@ -96,16 +170,16 @@
                     "ControlGroup": "1",
                     "ControlType": "label",
                     "text_align": "right",
-                    "top": "0.8",
+                    "top": "2.5",
                     "left": "-0.8",
-	                "x": "1.5",
+	                "x": "1.35",
                     "y": "1",	
                     "Label": {
                         "lang_tag": "relay_label",
                         "text": "Parent node:"
                     },
                     "Display": {
-                        "Top": 95,
+                        "Top": 135,
                         "Left": 25,
                         "Width": 150,
                         "Height": 20 
@@ -115,15 +189,15 @@
                     "ControlGroup": "1",
                     "ControlType": "variable",
                     "text_align": "left",
-                    "top": "0.8",
-                    "left": "0.72",
+                    "top": "2.5",
+                    "left": "0.6",
 	                "x": "2",
                     "y": "1",	
                     "Display": {
                         "Service": "urn:upnp-arduino-cc:serviceId:arduinonode1",
                         "Variable": "RelayNodeHR",
                         "Value": "1",
-                        "Top": 95,
+                        "Top": 135,
                         "Left": 110,
                         "Width": 100,
                         "Height": 20 
