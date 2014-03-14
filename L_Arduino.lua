@@ -229,7 +229,7 @@ local function processInternalMessage(incomingData, iChildId, iAltId)
 		-- Store version of Arduino Gateway
 		GATEWAY_VERSION = data
 		setVariableIfChanged(ARDUINO_SID, "ArduinoLibVersion", GATEWAY_VERSION, ARDUINO_DEVICE)
-    	elseif (varType == "SKETCH_NAME" or varType == "SKETCH_VERSION") then
+    	elseif ((varType == "SKETCH_NAME" or varType == "SKETCH_VERSION") and iChildId ~= nil) then
         	-- Store the Sketch name and Version
         	setVariableIfChanged(var[2], var[3], data, iChildId)
 	elseif (varType == "TIME") then
@@ -312,7 +312,7 @@ local function processInternalMessage(incomingData, iChildId, iAltId)
 	elseif (varType == "LOG_MESSAGE") then
 		log("Log: "..data)
 	else
-		log("Incoming internal command discarded")
+		log("Incoming internal command '" .. table.concat(incomingData, ";") .. "' discarded for child: " .. (iChildId ~= nil and iChildId or "nil"), 2)
 	end
 end
 
