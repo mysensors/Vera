@@ -367,7 +367,11 @@ local function setVariable(incomingData, childId, nodeId)
 			local nodeDevice = childIdLookupTable[nodeId .. ";" .. NODE_CHILD_ID] 
 			local variable = tInternalTypes["LAST_UPDATE"]
 			setVariableIfChanged(variable[2], variable[3], timestamp, nodeDevice)
-			setVariableIfChanged(variable[2], "LastUpdateHR", os.date('%I:%M %p', timestamp), nodeDevice)
+			
+			-- Set the last update in a human readable form for display on the console
+			local unit = luup.variable_get(ARDUINO_SID, "Unit", ARDUINO_DEVICE)
+			local timeFormat = (unit == 'M' and '%H:%M' or '%I:%M %p')			
+			setVariableIfChanged(variable[2], "LastUpdateHR", os.date(timeFormat, timestamp), nodeDevice)
 		end
 		
 			
