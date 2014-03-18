@@ -35,6 +35,12 @@
     	<sendEventsAttribute>no</sendEventsAttribute>
     	<dataType>string</dataType>
     </stateVariable>
+    <stateVariable>
+    	<name>LastUpdateHR</name>
+    	<sendEventsAttribute>no</sendEventsAttribute>
+    	<dataType>string</dataType>
+    </stateVariable>
+	    
  </serviceStateTable>
  <actionList>
 	<action>

@@ -229,9 +229,9 @@ local function processInternalMessage(incomingData, iChildId, iAltId)
 		-- Store version of Arduino Gateway
 		GATEWAY_VERSION = data
 		setVariableIfChanged(ARDUINO_SID, "ArduinoLibVersion", GATEWAY_VERSION, ARDUINO_DEVICE)
-    	elseif ((varType == "SKETCH_NAME" or varType == "SKETCH_VERSION") and iChildId ~= nil) then
-        	-- Store the Sketch name and Version
-        	setVariableIfChanged(var[2], var[3], data, iChildId)
+	elseif ((varType == "SKETCH_NAME" or varType == "SKETCH_VERSION") and iChildId ~= nil) then
+		-- Store the Sketch name and Version
+		setVariableIfChanged(var[2], var[3], data, iChildId)
 	elseif (varType == "TIME") then
 		-- Request time was sent from one of the sensors
 		sendInternalCommand(iAltId,"TIME",os.time() + 3600 * luup.timezone)
@@ -346,6 +346,7 @@ local function setVariable(incomingData, childId, nodeId)
 		local varType = tVarLookupNumType[index]
 		local var = tVarTypes[varType]
 		local value = incomingData[5]
+		local timestamp = os.time()
 		if (var[2] ~= nil) then 
 			log("Setting variable '".. var[3] .. "' to value '".. value.. "'")
 			setVariableIfChanged(var[2], var[3], value, childId)
@@ -354,17 +355,19 @@ local function setVariable(incomingData, childId, nodeId)
 			-- should update other variables to os.time()
 			if (varType == "TRIPPED" and value == "1") then
 				local variable = tInternalTypes["LAST_TRIP"]
-				setVariableIfChanged(variable[2], variable[3], os.time(), childId)
+				setVariableIfChanged(variable[2], variable[3], timestamp, childId)
 			else
 				local variable = tInternalTypes["LAST_UPDATE"]
-				setVariableIfChanged(variable[2], variable[3], os.time(), childId)
+				setVariableIfChanged(variable[2], variable[3], timestamp, childId)
 			end
 		end
 
-		local nodeDevice = childIdLookupTable[nodeId .. ";255" .. NODE_CHILD_ID] 
 		-- Always update LAST_UPDATE for node	
-		if (nodeDevice ~= nil) then 
-			setVariableIfChanged(variable[2], variable[3], os.time(), nodeDevice)
+		if (nodeId ~= nil) then
+			local nodeDevice = childIdLookupTable[nodeId .. ";" .. NODE_CHILD_ID] 
+			local variable = tInternalTypes["LAST_UPDATE"]
+			setVariableIfChanged(variable[2], variable[3], timestamp, nodeDevice)
+			setVariableIfChanged(variable[2], "LastUpdateHR", os.date('%I:%M %p', timestamp), nodeDevice)
 		end
 		
 			
