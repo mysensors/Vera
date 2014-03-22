@@ -145,7 +145,7 @@ end
 -- Return true if changed or false if no change
 --
 function setVariableIfChanged(serviceId, name, value, deviceId)
-	log(serviceId ..","..name..", "..value..", "..deviceId)
+    log(serviceId ..","..name..", "..value..", ".. deviceId)
     local curValue = luup.variable_get(serviceId, name, deviceId)
     
     if ((value ~= curValue) or (curValue == nil)) then
@@ -365,13 +365,17 @@ local function setVariable(incomingData, childId, nodeId)
 		-- Always update LAST_UPDATE for node	
 		if (nodeId ~= nil) then
 			local nodeDevice = childIdLookupTable[nodeId .. ";" .. NODE_CHILD_ID] 
-			local variable = tInternalTypes["LAST_UPDATE"]
-			setVariableIfChanged(variable[2], variable[3], timestamp, nodeDevice)
+			if (nodeDevice ~= nil) then
+				local variable = tInternalTypes["LAST_UPDATE"]
+				setVariableIfChanged(variable[2], variable[3], timestamp, nodeDevice)
 			
-			-- Set the last update in a human readable form for display on the console
-			local unit = luup.variable_get(ARDUINO_SID, "Unit", ARDUINO_DEVICE)
-			local timeFormat = (unit == 'M' and '%H:%M' or '%I:%M %p')			
-			setVariableIfChanged(variable[2], "LastUpdateHR", os.date(timeFormat, timestamp), nodeDevice)
+				-- Set the last update in a human readable form for display on the console
+				local unit = luup.variable_get(ARDUINO_SID, "Unit", ARDUINO_DEVICE)
+				local timeFormat = (unit == 'M' and '%H:%M' or '%I:%M %p')			
+				setVariableIfChanged(variable[2], "LastUpdateHR", os.date(timeFormat, timestamp), nodeDevice)
+			else
+				log("Unable to update LAST_UPDATE due to missing parent node for node device " .. nodeDevice, 2)
+			end 
 		end
 		
 			
