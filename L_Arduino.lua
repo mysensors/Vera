@@ -1,10 +1,14 @@
 module("L_Arduino", package.seeall)
 
 --
--- Arduino Gateway 
+-- MySensors Gateway Plugin
 -- 
--- Created by Henrik Ekblad <henrik.ekblad@gmail.com>
+-- Created by Henrik Ekblad <henrik.ekblad@mysensors.org>
 --
+-- http://www.mysensors.org
+-- https://github.com/mysensors
+--
+-- See github for contributors
 -- Ethernet contribution by A-lurker
 --	
 -- This program is free software; you can redistribute it and/or
@@ -12,8 +16,8 @@ module("L_Arduino", package.seeall)
 -- version 2 as published by the Free Software Foundation.
 --
   
-local PLUGIN_NAME = "Arduino"
-local PLUGIN_VERSION = "1.2+"
+local PLUGIN_NAME = "MySensors Gateway Plugin"
+local PLUGIN_VERSION = "1.3"
 local GATEWAY_VERSION = ""
 local IP_PORT = "5003"
 local BAUD_RATE = "115200"
@@ -167,9 +171,9 @@ local function task(text, mode)
 		log(text)
 	end
 	if (mode == TASK_ERROR_PERM) then
-		taskHandle = luup.task(text, TASK_ERROR, "Arduino plugin", taskHandle)
+		taskHandle = luup.task(text, TASK_ERROR, "MySensors plugin", taskHandle)
 	else
-		taskHandle = luup.task(text, mode, "Arduino plugin", taskHandle)
+		taskHandle = luup.task(text, mode, "MySensors plugin", taskHandle)
 
 		-- Clear the previous error, since they're all transient
 		if (mode ~= TASK_SUCCESS) then
@@ -219,7 +223,7 @@ local function presentation(incomingData, device, childId, altId)
 
 end 
 
-local function processInternalMessage(incomingData, iChildId, iAltId)
+local function processInternalMessage(incomingData, iChildId, iAltId, incomingNodeId)
 	local data = incomingData[5]
 	local index = tonumber(incomingData[4]);
 	local varType = tInternalLookupNumType[index]
@@ -244,7 +248,7 @@ local function processInternalMessage(incomingData, iChildId, iAltId)
 		sendInternalCommand(iAltId,"REQUEST_ID",nextAvailiableRadioId())
 	elseif (varType == "RELAY_NODE" and iChildId ~= nil) then
 		-- Set human readable relay mode status
-		setVariableIfChanged(var[2], var[3], data, iChildId)
+		setVariable(incomingData, iChildId, incomingNodeId) -- This will set relay node variable and update LAST_UPDATE for node device
 		setVariableIfChanged(var[2], "RelayNodeHR", data == "0" and "GW" or data, iChildId)
 	elseif (varType == "BATTERY_LEVEL") then
 		setVariableIfChanged(var[2], var[3], data, iChildId)
@@ -300,7 +304,7 @@ local function processInternalMessage(incomingData, iChildId, iAltId)
 						luup.chdev.append(ARDUINO_DEVICE, child_devices, v.id, v.description, v.device_type,v.device_file,"","",false)
 					end
 				end
-				task ("Found new Arduino sensor(s). Need to restart. Please wait.",TASK_BUSY)
+				task ("Found new sensor(s). Need to restart. Please wait.",TASK_BUSY)
 				luup.chdev.sync(ARDUINO_DEVICE,child_devices)
 				return
 			end
@@ -512,10 +516,10 @@ function processIncoming(s)
 			log("Request: ".. s)
 			requestStatus(incomingData, device, altId)
 		elseif (messageType == msgType.INTERNAL) then
-			processInternalMessage(incomingData, device, altId)
+			processInternalMessage(incomingData, device, altId, nodeId)
+		else
+   		 	log("Receive error: No handler for data: "..s, 1)
 		end
-	else 
-		log("Receive error: Unknown data: "..s, 1)
 	end
 end
 

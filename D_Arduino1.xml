@@ -7,10 +7,10 @@
   <device>
     <deviceType>urn:schemas-arduino-cc:device:arduino:1</deviceType>
     <staticJson>D_Arduino1.json</staticJson>
-    <friendlyName>Arduino Gateway Plugin</friendlyName>
+    <friendlyName>MySensors Plugin</friendlyName>
     <manufacturer>Arduino</manufacturer>
-    <manufacturerURL>http://www.arduino.cc</manufacturerURL>
-    <modelDescription>Arduino with nRF24L01 transceiver</modelDescription>
+    <manufacturerURL>http://www.mysensors.org</manufacturerURL>
+    <modelDescription>Arduino with radio</modelDescription>
     <modelName></modelName>
     <modelNumber>1.0</modelNumber>
     <handleChildren>1</handleChildren>
