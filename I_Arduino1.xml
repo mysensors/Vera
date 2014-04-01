@@ -39,8 +39,13 @@
   		<serviceId>urn:upnp-org:serviceId:Dimming1</serviceId>
   		<name>SetLoadLevelTarget</name>
   		<run>if (p ~= nil) then p.setDimmerLevel(lul_device, lul_settings.newLoadlevelTarget) end</run>
-    </action>    
-   <action>
+    </action>
+    <action>
+  		<serviceId>urn:micasaverde-com:serviceId:DoorLock1</serviceId>
+  		<name>SetTarget</name>
+  		<run>if (p ~= nil) then p.DoorLock(lul_device, lul_settings.newTargetValue) end</run>
+    </action>     
+    <action>
   		<serviceId>urn:upnp-org:serviceId:WindowCovering1</serviceId>
   		<name>Up</name>
   		<run>if (p ~= nil) then p.windowCovering(lul_device, "UP") end</run>
