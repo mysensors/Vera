@@ -471,6 +471,10 @@ function setDimmerLevel(device, newLoadlevelTarget)
 	sendCommand(luup.devices[device].id,"DIMMER",newLoadlevelTarget)
 end
 
+function setLockStatus(device, newTargetValue)
+	sendCommand(luup.devices[device].id,"LOCK",newTargetValue)
+end
+
 -- Security commands
 function setArmed(device, newArmedValue)
 	setVariableIfChanged(tVarTypes.ARMED[2], tVarTypes.ARMED[3], newArmedValue, device)
