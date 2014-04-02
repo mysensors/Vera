@@ -471,7 +471,7 @@ function setDimmerLevel(device, newLoadlevelTarget)
 	sendCommand(luup.devices[device].id,"DIMMER",newLoadlevelTarget)
 end
 
-function DoorLock(device, newTargetValue)
+function setLockStatus(device, newTargetValue)
 	sendCommand(luup.devices[device].id,"LOCK",newTargetValue)
 end
 

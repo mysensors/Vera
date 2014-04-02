@@ -43,7 +43,7 @@
     <action>
   		<serviceId>urn:micasaverde-com:serviceId:DoorLock1</serviceId>
   		<name>SetTarget</name>
-  		<run>if (p ~= nil) then p.DoorLock(lul_device, lul_settings.newTargetValue) end</run>
+  		<run>if (p ~= nil) then p.setLockStatus(lul_device, lul_settings.newTargetValue) end</run>
     </action>     
     <action>
   		<serviceId>urn:upnp-org:serviceId:WindowCovering1</serviceId>
