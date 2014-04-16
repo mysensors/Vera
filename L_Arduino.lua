@@ -109,6 +109,7 @@ local tVarTypes = {
 	FLOW = 			{34, "urn:micasaverde-com:serviceId:WaterMetering1", "Flow", "" },
 	VOLUME = 		{35, "urn:micasaverde-com:serviceId:WaterMetering1", "Volume", "0" },
 	LOCK = 		    {36, "urn:micasaverde-com:serviceId:DoorLock1", "Status", ""}
+	
 }
 
 
@@ -474,6 +475,18 @@ end
 function setLockStatus(device, newTargetValue)
 	sendCommand(luup.devices[device].id,"LOCK",newTargetValue)
 end
+
+
+-- Heater commands
+function SetTheNewTemp(device, NewCurrentSetpoint)
+	sendCommand(luup.devices[device].id,"HEATER",NewCurrentSetpoint)
+end
+
+function SetModeTarget(device, NewModeTarget)
+	sendCommand(luup.devices[device].id,"HEATER_SW",NewModeTarget)
+end
+
+
 
 -- Security commands
 function setArmed(device, newArmedValue)
