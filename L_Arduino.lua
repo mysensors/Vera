@@ -163,6 +163,49 @@ function setVariableIfChanged(serviceId, name, value, deviceId)
     end
 end
 
+local function setVariable(incomingData, childId, nodeId)
+        if (childId ~= nil) then
+                -- Set variable on child sensor.
+                local index = tonumber(incomingData[4]);
+                local varType = tVarLookupNumType[index]
+                local var = tVarTypes[varType]
+                local value = incomingData[5]
+                local timestamp = os.time()
+                if (var[2] ~= nil) then
+                        log("Setting variable '".. var[3] .. "' to value '".. value.. "'")
+                        setVariableIfChanged(var[2], var[3], value, childId)
+
+                        -- Handle special variables battery level and tripped which also
+                        -- should update other variables to os.time()
+                        if (varType == "TRIPPED" and value == "1") then
+                                local variable = tInternalTypes["LAST_TRIP"]
+                                setVariableIfChanged(variable[2], variable[3], timestamp, childId)
+                        else
+                                local variable = tInternalTypes["LAST_UPDATE"]
+                                setVariableIfChanged(variable[2], variable[3], timestamp, childId)
+                        end
+                end
+
+                -- Always update LAST_UPDATE for node   
+                if (nodeId ~= nil) then
+                        local nodeDevice = childIdLookupTable[nodeId .. ";" .. NODE_CHILD_ID]
+                        if (nodeDevice ~= nil) then
+                                local variable = tInternalTypes["LAST_UPDATE"]
+                                setVariableIfChanged(variable[2], variable[3], timestamp, nodeDevice)
+
+                                -- Set the last update in a human readable form for display on the console
+                                local unit = luup.variable_get(ARDUINO_SID, "Unit", ARDUINO_DEVICE)
+                                local timeFormat = (unit == 'M' and '%H:%M' or '%I:%M %p')
+                                setVariableIfChanged(variable[2], "LastUpdateHR", os.date(timeFormat, timestamp), nodeDevice)
+                        else
+                                log("Unable to update LAST_UPDATE due to missing parent node for node device " .. nodeDevice, 2)
+                        end
+                end
+
+
+        end
+end
+
 local function task(text, mode)
 	if (mode == TASK_ERROR_PERM) then
 		log(text, 1)
@@ -343,51 +386,6 @@ local function requestStatus(incomingData, childId, altId)
 	end
 	
 end
-
-local function setVariable(incomingData, childId, nodeId)
-	if (childId ~= nil) then
-		-- Set variable on child sensor.
-		local index = tonumber(incomingData[4]);
-		local varType = tVarLookupNumType[index]
-		local var = tVarTypes[varType]
-		local value = incomingData[5]
-		local timestamp = os.time()
-		if (var[2] ~= nil) then 
-			log("Setting variable '".. var[3] .. "' to value '".. value.. "'")
-			setVariableIfChanged(var[2], var[3], value, childId)
-		
-			-- Handle special variables battery level and tripped which also
-			-- should update other variables to os.time()
-			if (varType == "TRIPPED" and value == "1") then
-				local variable = tInternalTypes["LAST_TRIP"]
-				setVariableIfChanged(variable[2], variable[3], timestamp, childId)
-			else
-				local variable = tInternalTypes["LAST_UPDATE"]
-				setVariableIfChanged(variable[2], variable[3], timestamp, childId)
-			end
-		end
-
-		-- Always update LAST_UPDATE for node	
-		if (nodeId ~= nil) then
-			local nodeDevice = childIdLookupTable[nodeId .. ";" .. NODE_CHILD_ID] 
-			if (nodeDevice ~= nil) then
-				local variable = tInternalTypes["LAST_UPDATE"]
-				setVariableIfChanged(variable[2], variable[3], timestamp, nodeDevice)
-			
-				-- Set the last update in a human readable form for display on the console
-				local unit = luup.variable_get(ARDUINO_SID, "Unit", ARDUINO_DEVICE)
-				local timeFormat = (unit == 'M' and '%H:%M' or '%I:%M %p')			
-				setVariableIfChanged(variable[2], "LastUpdateHR", os.date(timeFormat, timestamp), nodeDevice)
-			else
-				log("Unable to update LAST_UPDATE due to missing parent node for node device " .. nodeDevice, 2)
-			end 
-		end
-		
-			
-	end
-end
-
-
 
 -- Function to send a message to sensor
 function sendCommand(altid, variableId, value)
