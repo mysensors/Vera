@@ -17,7 +17,7 @@ module("L_Arduino", package.seeall)
 --
   
 local PLUGIN_NAME = "MySensors Gateway Plugin"
-local PLUGIN_VERSION = "1.3"
+local PLUGIN_VERSION = "1.4 dev"
 local GATEWAY_VERSION = ""
 local IP_PORT = "5003"
 local BAUD_RATE = "115200"
@@ -38,9 +38,9 @@ local includeCount = 0
 
 local msgType = { 
 	PRESENTATION = "0",  
-	SET_VARIABLE = "1", 
-	REQ_VARIABLE = "2", 
-	ACK_VARIABLE = "3",
+	SET = "1", 
+	REQUEST = "2", 
+	SET_WITH_ACK = "3",
 	INTERNAL 	 = "4" 
 }
 
@@ -197,6 +197,24 @@ local function nextAvailiableRadioId()
 	return 255
 end
  
+-- Function to send a message to sensor
+function sendCommand(altid, variableId, value)
+	return sendCommandWithMessageType(altid, "SET", tonumber(tVarTypes[variableId][1]), value)
+end
+
+function sendNodeCommand(device, variableId, value)
+	return sendCommandWithMessageType(luup.devices[device].id, "SET", tonumber(tVarTypes[variableId][1]), value)
+end
+
+function sendInternalCommand(altid, variableId, value)
+	return sendCommandWithMessageType(altid, "INTERNAL", tonumber(tInternalTypes[variableId][1]), value)
+end
+
+function sendRequestResponse(altid, variableId, value)
+	return sendCommandWithMessageType(altid, "SET", tonumber(tVarTypes[variableId][1]), value)
+end
+
+
 
 local function presentation(incomingData, device, childId, altId)
 	local type = incomingData[4]
@@ -249,7 +267,7 @@ local function processInternalMessage(incomingData, iChildId, iAltId, incomingNo
 		sendInternalCommand(iAltId,"REQUEST_ID",nextAvailiableRadioId())
 	elseif (varType == "RELAY_NODE" and iChildId ~= nil) then
 		-- Set human readable relay mode status
-		setVariable(incomingData, iChildId, incomingNodeId) -- This will set relay node variable and update LAST_UPDATE for node device
+		setVariable(incomingData, iChildId, incomingNodeId,false) -- This will set relay node variable and update LAST_UPDATE for node device
 		setVariableIfChanged(var[2], "RelayNodeHR", data == "0" and "GW" or data, iChildId)
 	elseif (varType == "BATTERY_LEVEL") then
 		setVariableIfChanged(var[2], var[3], data, iChildId)
@@ -344,7 +362,7 @@ local function requestStatus(incomingData, childId, altId)
 	
 end
 
-local function setVariable(incomingData, childId, nodeId)
+local function setVariable(incomingData, childId, nodeId, ack)
 	if (childId ~= nil) then
 		-- Set variable on child sensor.
 		local index = tonumber(incomingData[4]);
@@ -383,29 +401,16 @@ local function setVariable(incomingData, childId, nodeId)
 			end 
 		end
 		
-			
+		if ack then
+			sendCommand(altid, variableId, value)
+		
+		end	
 	end
 end
 
 
 
--- Function to send a message to sensor
-function sendCommand(altid, variableId, value)
-	return sendCommandWithMessageType(altid, "SET_VARIABLE", tonumber(tVarTypes[variableId][1]), value)
-end
 
-function sendNodeCommand(device, variableId, value)
-	return sendCommandWithMessageType(luup.devices[device].id, "SET_VARIABLE", tonumber(tVarTypes[variableId][1]), value)
-end
-
-function sendInternalCommand(altid, variableId, value)
-	return sendCommandWithMessageType(altid, "INTERNAL", tonumber(tInternalTypes[variableId][1]), value)
-end
-
-
-function sendRequestResponse(altid, variableId, value)
-	return sendCommandWithMessageType(altid, "ACK_VARIABLE", tonumber(tVarTypes[variableId][1]), value)
-end
 
 
 function sendCommandWithMessageType(altid, messageType, variableId, value)
@@ -523,13 +528,16 @@ function processIncoming(s)
 		local altId = nodeId .. ";" .. childId
 		local device = childIdLookupTable[altId] 
 
-		if (messageType==msgType.SET_VARIABLE) then
-			log("Set Var: ".. s)
-			setVariable(incomingData, device, nodeId)
+		if (messageType==msgType.SET) then
+			log("Set variable: ".. s)
+			setVariable(incomingData, device, nodeId, false)
+		if (messageType==msgType.SET_REQUEST_ACK) then
+			log("Set variable and send ack: ".. s)
+			setVariable(incomingData, device, nodeId, true)
 		elseif (messageType==msgType.PRESENTATION) then
 			log("Presentation: ".. s)
 			presentation(incomingData, device, childId, altId)
-		elseif (messageType==msgType.REQ_VARIABLE) then
+		elseif (messageType==msgType.REQUEST) then
 			log("Request: ".. s)
 			requestStatus(incomingData, device, altId)
 		elseif (messageType == msgType.INTERNAL) then
