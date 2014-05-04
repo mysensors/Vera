@@ -199,11 +199,11 @@ end
  
 -- Function to send a message to sensor
 function sendCommand(altid, variableId, value)
-	return sendCommandWithMessageType(altid, "SET", tonumber(tVarTypes[variableId][1]), value)
+	return sendCommandWithMessageType(altid, "SET_WITH_ACK", tonumber(tVarTypes[variableId][1]), value)
 end
 
 function sendNodeCommand(device, variableId, value)
-	return sendCommandWithMessageType(luup.devices[device].id, "SET", tonumber(tVarTypes[variableId][1]), value)
+	return sendCommandWithMessageType(luup.devices[device].id, "SET_WITH_ACK", tonumber(tVarTypes[variableId][1]), value)
 end
 
 function sendInternalCommand(altid, variableId, value)
@@ -362,7 +362,7 @@ local function requestStatus(incomingData, childId, altId)
 	
 end
 
-local function setVariable(incomingData, childId, nodeId, ack)
+local function setVariable(incomingData, childId, nodeId)
 	if (childId ~= nil) then
 		-- Set variable on child sensor.
 		local index = tonumber(incomingData[4]);
@@ -400,11 +400,6 @@ local function setVariable(incomingData, childId, nodeId, ack)
 				log("Unable to update LAST_UPDATE due to missing parent node for node device " .. nodeDevice, 2)
 			end 
 		end
-		
-		if ack then
-			sendCommand(altid, variableId, value)
-		
-		end	
 	end
 end
 
@@ -530,10 +525,7 @@ function processIncoming(s)
 
 		if (messageType==msgType.SET) then
 			log("Set variable: ".. s)
-			setVariable(incomingData, device, nodeId, false)
-		if (messageType==msgType.SET_REQUEST_ACK) then
-			log("Set variable and send ack: ".. s)
-			setVariable(incomingData, device, nodeId, true)
+			setVariable(incomingData, device, nodeId)
 		elseif (messageType==msgType.PRESENTATION) then
 			log("Presentation: ".. s)
 			presentation(incomingData, device, childId, altId)
