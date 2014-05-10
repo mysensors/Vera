@@ -112,25 +112,27 @@ local tVarTypes = {
 	
 }
 
+local tVeraTypes = {
+	BATTERY_DATE = 	{0, "urn:micasaverde-com:serviceId:HaDevice1", "BatteryDate", "" },
+	LAST_TRIP = 	{1, "urn:micasaverde-com:serviceId:SecuritySensor1", "LastTrip", "" },
+    LAST_UPDATE = 	{2, "urn:micasaverde-com:serviceId:HaDevice1", "LastUpdate", "" }
+}
 
 local tInternalLookupNumType = {}
 local tInternalTypes = {
 	BATTERY_LEVEL = {0, "urn:micasaverde-com:serviceId:HaDevice1", "BatteryLevel", "" },
-	BATTERY_DATE = 	{1, "urn:micasaverde-com:serviceId:HaDevice1", "BatteryDate", "" },
-	LAST_TRIP = 	{2, "urn:micasaverde-com:serviceId:SecuritySensor1", "LastTrip", "" },
-	TIME = 			{3, nil, nil, nil},
- 	VERSION = 		{4, "urn:upnp-arduino-cc:serviceId:arduinonode1", "ArduinoLibVersion", ""},
- 	REQUEST_ID = 	{5, nil, nil, nil},
- 	INCLUSION_MODE ={6, "urn:upnp-arduino-cc:serviceId:arduino1", "InclusionMode", "0"},
-  	RELAY_NODE=     {7, "urn:upnp-arduino-cc:serviceId:arduinonode1", "RelayNode", ""},
-    LAST_UPDATE = 	{8, "urn:micasaverde-com:serviceId:HaDevice1", "LastUpdate", "" },
-    PING = 			{9, nil, nil, nil },
-    PING_ACK =      {10, nil, nil, nil },
-    LOG_MESSAGE =   {11, nil, nil, nil },
-    CHILDREN =  	{12, "urn:upnp-arduino-cc:serviceId:arduinonode1", "Children", "0"},
- 	UNIT =			{13, "urn:upnp-arduino-cc:serviceId:arduino1", "Unit", "M"},  -- M = Metric / I = Imperial
-	SKETCH_NAME    = {14, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchName", ""},
-	SKETCH_VERSION = {15, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchVersion", ""}
+	TIME = 			{1, nil, nil, nil},
+ 	VERSION = 		{2, "urn:upnp-arduino-cc:serviceId:arduinonode1", "ArduinoLibVersion", ""},
+ 	REQUEST_ID = 	{3, nil, nil, nil},
+ 	INCLUSION_MODE ={4, "urn:upnp-arduino-cc:serviceId:arduino1", "InclusionMode", "0"},
+  	RELAY_NODE=     {5, "urn:upnp-arduino-cc:serviceId:arduinonode1", "RelayNode", ""},
+    PING = 			{6, nil, nil, nil },
+    PING_ACK =      {7, nil, nil, nil },
+    LOG_MESSAGE =   {8, nil, nil, nil },
+    CHILDREN =  	{9, "urn:upnp-arduino-cc:serviceId:arduinonode1", "Children", "0"},
+ 	UNIT =			{10, "urn:upnp-arduino-cc:serviceId:arduino1", "Unit", "M"},  -- M = Metric / I = Imperial
+	SKETCH_NAME    = {11, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchName", ""},
+	SKETCH_VERSION = {12, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchVersion", ""}
 }
 
 
@@ -271,7 +273,7 @@ local function processInternalMessage(incomingData, iChildId, iAltId, incomingNo
 		setVariableIfChanged(var[2], "RelayNodeHR", data == "0" and "GW" or data, iChildId)
 	elseif (varType == "BATTERY_LEVEL") then
 		setVariableIfChanged(var[2], var[3], data, iChildId)
-		local variable = tInternalTypes["BATTERY_DATE"]
+		local variable = tVeraTypes["BATTERY_DATE"]
 		setVariableIfChanged(variable[2], variable[3], os.time(), iChildId)
 	elseif (varType == "INCLUSION_MODE") then
 		setVariableIfChanged(var[2], var[3], data, ARDUINO_DEVICE)
@@ -377,10 +379,10 @@ local function setVariable(incomingData, childId, nodeId)
 			-- Handle special variables battery level and tripped which also
 			-- should update other variables to os.time()
 			if (varType == "TRIPPED" and value == "1") then
-				local variable = tInternalTypes["LAST_TRIP"]
+				local variable = tVeraTypes["LAST_TRIP"]
 				setVariableIfChanged(variable[2], variable[3], timestamp, childId)
 			else
-				local variable = tInternalTypes["LAST_UPDATE"]
+				local variable = tVeraTypes["LAST_UPDATE"]
 				setVariableIfChanged(variable[2], variable[3], timestamp, childId)
 			end
 		end
@@ -389,7 +391,7 @@ local function setVariable(incomingData, childId, nodeId)
 		if (nodeId ~= nil) then
 			local nodeDevice = childIdLookupTable[nodeId .. ";" .. NODE_CHILD_ID] 
 			if (nodeDevice ~= nil) then
-				local variable = tInternalTypes["LAST_UPDATE"]
+				local variable = tVeraTypes["LAST_UPDATE"]
 				setVariableIfChanged(variable[2], variable[3], timestamp, nodeDevice)
 			
 				-- Set the last update in a human readable form for display on the console
