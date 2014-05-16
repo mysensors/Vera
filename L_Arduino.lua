@@ -125,12 +125,11 @@ local tInternalTypes = {
  	VERSION = 		{2, "urn:upnp-arduino-cc:serviceId:arduinonode1", "ArduinoLibVersion", ""},
  	REQUEST_ID = 	{3, nil, nil, nil},
  	INCLUSION_MODE ={4, "urn:upnp-arduino-cc:serviceId:arduino1", "InclusionMode", "0"},
-  	RELAY_NODE=     {5, "urn:upnp-arduino-cc:serviceId:arduinonode1", "RelayNode", ""},
+  	CONFIG=         {5, "urn:upnp-arduino-cc:serviceId:arduinonode1", "RelayNode", ""},
     PING = 			{6, nil, nil, nil },
     PING_ACK =      {7, nil, nil, nil },
     LOG_MESSAGE =   {8, nil, nil, nil },
     CHILDREN =  	{9, "urn:upnp-arduino-cc:serviceId:arduinonode1", "Children", "0"},
- 	UNIT =			{10, "urn:upnp-arduino-cc:serviceId:arduino1", "Unit", "M"},  -- M = Metric / I = Imperial
 	SKETCH_NAME    = {11, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchName", ""},
 	SKETCH_VERSION = {12, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchVersion", ""}
 }
@@ -260,17 +259,16 @@ local function processInternalMessage(incomingData, iChildId, iAltId, incomingNo
 	elseif (varType == "TIME") then
 		-- Request time was sent from one of the sensors
 		sendInternalCommand(iAltId,"TIME",os.time() + 3600 * luup.timezone)
-	elseif (varType == "UNIT") then
-		-- Request for unit was sent from one of the sensors
-		local unit = luup.variable_get(ARDUINO_SID, "Unit", ARDUINO_DEVICE)
-		sendInternalCommand(iAltId,"UNIT",unit)
 	elseif (varType == "REQUEST_ID") then
 		-- Determine next available radioid and sent it to the sensor
 		sendInternalCommand(iAltId,"REQUEST_ID",nextAvailiableRadioId())
-	elseif (varType == "RELAY_NODE" and iChildId ~= nil) then
-		-- Set human readable relay mode status
+	elseif (varType == "CONFIG" and iChildId ~= nil) then
+		-- Set incoming parent node information
 		setVariable(incomingData, iChildId, incomingNodeId,false) -- This will set relay node variable and update LAST_UPDATE for node device
 		setVariableIfChanged(var[2], "RelayNodeHR", data == "0" and "GW" or data, iChildId)
+		-- Send back configuration to node
+		local unit = luup.variable_get(ARDUINO_SID, "Unit", ARDUINO_DEVICE)
+		sendInternalCommand(iAltId,"CONFIG",unit)
 	elseif (varType == "BATTERY_LEVEL") then
 		setVariableIfChanged(var[2], var[3], data, iChildId)
 		local variable = tVeraTypes["BATTERY_DATE"]
@@ -438,11 +436,6 @@ function stopInclusion(device)
 end
 
 -- Arduino relay node device commands
-function fetchChildren(device)
-	local variable = tInternalTypes["CHILDREN"]
-	setVariableIfChanged(variable[2], variable[3], "Fetching...", device)
-	sendInternalCommand(luup.devices[device].id,"CHILDREN","F")
-end
 
 function clearChildren(device)
 	local variable = tInternalTypes["CHILDREN"]
@@ -450,11 +443,8 @@ function clearChildren(device)
 	sendInternalCommand(luup.devices[device].id,"CHILDREN","C")
 end
 
-function refreshRelay(device)
-	local variable = tInternalTypes["RELAY_NODE"]
-	setVariableIfChanged(variable[2], variable[3], "Refreshing...", device)
-	sendInternalCommand(luup.devices[device].id,"RELAY_NODE","")
-end
+
+-- Window covering commands
 
 function windowCovering(device, action)
   sendCommand(luup.devices[device].id,action,"")

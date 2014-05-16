@@ -58,18 +58,9 @@
      		</argument>
   		</argumentList>
   	</action>
-	<action>
-  		<name>FetchChildren</name>
-  		<argumentList>
-  		</argumentList>
-  	</action>
+	
 	<action>
   		<name>ClearChildren</name>
-  		<argumentList>
-  		</argumentList>
-  	</action>
-	<action>
-  		<name>RefreshRelay</name>
   		<argumentList>
   		</argumentList>
   	</action>

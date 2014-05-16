@@ -95,20 +95,8 @@
 
     <action>
   		<serviceId>urn:upnp-arduino-cc:serviceId:arduinonode1</serviceId>
-  		<name>FetchChildren</name>
-  		<run>if (p ~= nil) then p.fetchChildren(lul_device) end</run>
-    </action>
-
-    <action>
-  		<serviceId>urn:upnp-arduino-cc:serviceId:arduinonode1</serviceId>
   		<name>ClearChildren</name>
   		<run>if (p ~= nil) then p.clearChildren(lul_device) end</run>
-    </action>
-
-    <action>
-  		<serviceId>urn:upnp-arduino-cc:serviceId:arduinonode1</serviceId>
-  		<name>RefreshRelay</name>
-  		<run>if (p ~= nil) then p.refreshRelay(lul_device) end</run>
     </action>
 
     <action>
