@@ -130,8 +130,8 @@ local tInternalTypes = {
     PING_ACK =      {7, nil, nil, nil },
     LOG_MESSAGE =   {8, nil, nil, nil },
     CHILDREN =  	{9, "urn:upnp-arduino-cc:serviceId:arduinonode1", "Children", "0"},
-	SKETCH_NAME    = {11, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchName", ""},
-	SKETCH_VERSION = {12, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchVersion", ""}
+	SKETCH_NAME    = {10, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchName", ""},
+	SKETCH_VERSION = {11, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchVersion", ""}
 }
 
 
