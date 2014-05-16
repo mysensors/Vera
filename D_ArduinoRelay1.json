@@ -217,8 +217,8 @@
                         "text": "Last Update:"
                     },
                     "Display": {
-                        "Top": 105,
-                        "Left": 30,
+                        "Top": 155,
+                        "Left": 25,
                         "Width": 300,
                         "Height": 20 
                     }
@@ -235,7 +235,7 @@
                         "Service": "urn:micasaverde-com:serviceId:HaDevice1",
                         "Variable": "LastUpdateHR",
                         "Value": "1",
-                        "Top": 105,
+                        "Top": 155,
                         "Left": 120,
                         "Width": 300,
                         "Height": 20 
@@ -270,15 +270,15 @@
                     
                     "Label": {
                             "lang_tag": "clear_child_routes",
-                            "text": "Clear Routes"
+                            "text": "Clear"
                         },
                      "Display": {
                             "Service": "urn:upnp-arduino-cc:serviceId:arduinonode1",
-                            "Variable": "Children",
+                            "Variable": "Routing table",
                             "Value": "Clearing...",
                             "Top": 15,
                             "Left": 200,
-                            "Width": 80,
+                            "Width": 160,
                             "Height": 20
                         },
                      "Command": { 
