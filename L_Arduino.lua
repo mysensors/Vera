@@ -123,23 +123,43 @@ local tInternalTypes = {
 	BATTERY_LEVEL = {0, "urn:micasaverde-com:serviceId:HaDevice1", "BatteryLevel", "" },
 	TIME = 			{1, nil, nil, nil},
  	VERSION = 		{2, "urn:upnp-arduino-cc:serviceId:arduinonode1", "ArduinoLibVersion", ""},
- 	REQUEST_ID = 	{3, nil, nil, nil},
- 	INCLUSION_MODE ={4, "urn:upnp-arduino-cc:serviceId:arduino1", "InclusionMode", "0"},
-  	CONFIG=         {5, "urn:upnp-arduino-cc:serviceId:arduinonode1", "RelayNode", ""},
-    PING = 			{6, nil, nil, nil },
-    PING_ACK =      {7, nil, nil, nil },
-    LOG_MESSAGE =   {8, nil, nil, nil },
-    CHILDREN =  	{9, "urn:upnp-arduino-cc:serviceId:arduinonode1", "Children", "0"},
-	SKETCH_NAME    = {10, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchName", ""},
-	SKETCH_VERSION = {11, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchVersion", ""}
+ 	ID_REQUEST = 	{3, nil, nil, nil},
+ 	ID_RESPONSE = 	{4, nil, nil, nil},
+ 	INCLUSION_MODE ={5, "urn:upnp-arduino-cc:serviceId:arduino1", "InclusionMode", "0"},
+  	CONFIG =        {6, "urn:upnp-arduino-cc:serviceId:arduinonode1", "RelayNode", ""},
+    PING = 			{7, nil, nil, nil },
+    PING_ACK =      {8, nil, nil, nil },
+    LOG_MESSAGE =   {9, nil, nil, nil },
+    CHILDREN =  	{10, "urn:upnp-arduino-cc:serviceId:arduinonode1", "Children", "0"},
+	SKETCH_NAME    = {11, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchName", ""},
+	SKETCH_VERSION = {12, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchVersion", ""}
 }
 
 
+local function printTable(list, i)
+    local listString = ''
+    if not i then
+        listString = listString .. '{'
+    end
+    i = i or 1
+    local element = list[i]
+    if not element then
+        return listString .. '}'
+    end
+    if(type(element) == 'table') then
+        listString = listString .. printTable(element)
+    else
+        listString = listString .. element
+    end
+    return listString .. ', ' .. printTable(list, i + 1)
+end
 
 
 
 local function log(text, level)
-    if (text == nil) then
+	if(type(text) == 'table') then
+		luup.log("Arduino: table:" .. printTable(text) , (level or 50))
+    elseif (text == nil) then
 		luup.log("Arduino: nil-value" , (level or 50))
 	else    
 		luup.log("Arduino: " .. text, (level or 50))
@@ -162,6 +182,52 @@ function setVariableIfChanged(serviceId, name, value, deviceId)
         return false
         
     end
+end
+
+local function setLastUpdate(nodeDevice)
+	if (nodeDevice ~= nil) then
+		local timestamp = os.time()
+		local variable = tVeraTypes["LAST_UPDATE"]
+		setVariableIfChanged(variable[2], variable[3], timestamp, nodeDevice)
+	
+		-- Set the last update in a human readable form for display on the console
+		local unit = luup.variable_get(ARDUINO_SID, "Unit", ARDUINO_DEVICE)
+		local timeFormat = (unit == 'M' and '%H:%M' or '%I:%M %p')			
+		setVariableIfChanged(variable[2], "LastUpdateHR", os.date(timeFormat, timestamp), nodeDevice)
+	else
+		log("Unable to update LAST_UPDATE due to missing parent node for node device " .. nodeDevice, 2)
+	end 
+end
+
+local function setVariable(incomingData, childId, nodeId)
+	if (childId ~= nil) then
+		-- Set variable on child sensor.
+		local index = tonumber(incomingData[4]);
+		local varType = tVarLookupNumType[index]
+		local var = tVarTypes[varType]
+		local value = incomingData[5]
+		local timestamp = os.time()
+		if (var[2] ~= nil) then 
+			log("Setting variable '".. var[3] .. "' to value '".. value.. "'")
+			setVariableIfChanged(var[2], var[3], value, childId)
+		
+			-- Handle special variables battery level and tripped which also
+			-- should update other variables to os.time()
+			if (varType == "TRIPPED" and value == "1") then
+				local variable = tVeraTypes["LAST_TRIP"]
+				setVariableIfChanged(variable[2], variable[3], timestamp, childId)
+			else
+				local variable = tVeraTypes["LAST_UPDATE"]
+				setVariableIfChanged(variable[2], variable[3], timestamp, childId)
+			end
+		end
+
+		-- Always update LAST_UPDATE for node	
+		if (nodeId ~= nil) then
+			local nodeDevice = childIdLookupTable[nodeId .. ";" .. NODE_CHILD_ID] 
+			setLastUpdate(nodeDevice)
+		end
+	end
 end
 
 local function task(text, mode)
@@ -238,9 +304,7 @@ local function presentation(incomingData, device, childId, altId)
 			-- The library version of sensor differs from plugin version. Warn about it.
 			log("Warning: Sensor has different library version than GW. Id: "..altId)
 		end
-
 	end
-
 end 
 
 local function processInternalMessage(incomingData, iChildId, iAltId, incomingNodeId)
@@ -259,12 +323,15 @@ local function processInternalMessage(incomingData, iChildId, iAltId, incomingNo
 	elseif (varType == "TIME") then
 		-- Request time was sent from one of the sensors
 		sendInternalCommand(iAltId,"TIME",os.time() + 3600 * luup.timezone)
-	elseif (varType == "REQUEST_ID") then
+	elseif (varType == "ID_REQUEST") then
 		-- Determine next available radioid and sent it to the sensor
-		sendInternalCommand(iAltId,"REQUEST_ID",nextAvailiableRadioId())
+		sendInternalCommand(iAltId,"ID_RESPONSE",nextAvailiableRadioId())
 	elseif (varType == "CONFIG" and iChildId ~= nil) then
-		-- Set incoming parent node information
-		setVariable(incomingData, iChildId, incomingNodeId,false) -- This will set relay node variable and update LAST_UPDATE for node device
+		-- Update last update value for this node
+		setLastUpdate(iChildId)
+		-- Update parent node information
+		setVariableIfChanged(var[2], var[3], data, iChildId)
+		-- Create a human readable form for parent
 		setVariableIfChanged(var[2], "RelayNodeHR", data == "0" and "GW" or data, iChildId)
 		-- Send back configuration to node
 		local unit = luup.variable_get(ARDUINO_SID, "Unit", ARDUINO_DEVICE)
@@ -361,49 +428,6 @@ local function requestStatus(incomingData, childId, altId)
 	end
 	
 end
-
-local function setVariable(incomingData, childId, nodeId)
-	if (childId ~= nil) then
-		-- Set variable on child sensor.
-		local index = tonumber(incomingData[4]);
-		local varType = tVarLookupNumType[index]
-		local var = tVarTypes[varType]
-		local value = incomingData[5]
-		local timestamp = os.time()
-		if (var[2] ~= nil) then 
-			log("Setting variable '".. var[3] .. "' to value '".. value.. "'")
-			setVariableIfChanged(var[2], var[3], value, childId)
-		
-			-- Handle special variables battery level and tripped which also
-			-- should update other variables to os.time()
-			if (varType == "TRIPPED" and value == "1") then
-				local variable = tVeraTypes["LAST_TRIP"]
-				setVariableIfChanged(variable[2], variable[3], timestamp, childId)
-			else
-				local variable = tVeraTypes["LAST_UPDATE"]
-				setVariableIfChanged(variable[2], variable[3], timestamp, childId)
-			end
-		end
-
-		-- Always update LAST_UPDATE for node	
-		if (nodeId ~= nil) then
-			local nodeDevice = childIdLookupTable[nodeId .. ";" .. NODE_CHILD_ID] 
-			if (nodeDevice ~= nil) then
-				local variable = tVeraTypes["LAST_UPDATE"]
-				setVariableIfChanged(variable[2], variable[3], timestamp, nodeDevice)
-			
-				-- Set the last update in a human readable form for display on the console
-				local unit = luup.variable_get(ARDUINO_SID, "Unit", ARDUINO_DEVICE)
-				local timeFormat = (unit == 'M' and '%H:%M' or '%I:%M %p')			
-				setVariableIfChanged(variable[2], "LastUpdateHR", os.date(timeFormat, timestamp), nodeDevice)
-			else
-				log("Unable to update LAST_UPDATE due to missing parent node for node device " .. nodeDevice, 2)
-			end 
-		end
-	end
-end
-
-
 
 
 
