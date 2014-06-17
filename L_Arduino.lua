@@ -38,10 +38,10 @@ local includeCount = 0
 
 local msgType = { 
 	PRESENTATION = "0",  
-	SET = "1", 
-	REQUEST = "2", 
-	SET_WITH_ACK = "3",
-	INTERNAL 	 = "4" 
+	SET 		 = "1", 
+	REQUEST 	 = "2", 
+	INTERNAL 	 = "3", 
+	STREAM 	 	 = "4"
 }
 
 local tDeviceLookupNumType = {}
@@ -266,19 +266,19 @@ end
  
 -- Function to send a message to sensor
 function sendCommand(altid, variableId, value)
-	return sendCommandWithMessageType(altid, "SET_WITH_ACK", tonumber(tVarTypes[variableId][1]), value)
+	return sendCommandWithMessageType(altid, "SET", 1, tonumber(tVarTypes[variableId][1]), value)
 end
 
 function sendNodeCommand(device, variableId, value)
-	return sendCommandWithMessageType(luup.devices[device].id, "SET_WITH_ACK", tonumber(tVarTypes[variableId][1]), value)
+	return sendCommandWithMessageType(luup.devices[device].id, "SET", 1, tonumber(tVarTypes[variableId][1]), value)
 end
 
 function sendInternalCommand(altid, variableId, value)
-	return sendCommandWithMessageType(altid, "INTERNAL", tonumber(tInternalTypes[variableId][1]), value)
+	return sendCommandWithMessageType(altid, "INTERNAL",0, tonumber(tInternalTypes[variableId][1]), value)
 end
 
 function sendRequestResponse(altid, variableId, value)
-	return sendCommandWithMessageType(altid, "SET", tonumber(tVarTypes[variableId][1]), value)
+	return sendCommandWithMessageType(altid, "SET", 0, tonumber(tVarTypes[variableId][1]), value)
 end
 
 
@@ -432,8 +432,8 @@ end
 
 
 
-function sendCommandWithMessageType(altid, messageType, variableId, value)
-	local cmd = altid..";".. msgType[messageType] .. ";" .. variableId .. ";" .. value
+function sendCommandWithMessageType(altid, messageType, ack, variableId, value)
+	local cmd = altid..";".. msgType[messageType] .. ";" .. ack .. ";" .. variableId .. ";" .. value
 	log("Sending: " .. cmd)
 
 	if (luup.io.write(cmd) == false)  then
@@ -636,7 +636,7 @@ function startup(lul_device)
 	GATEWAY_VERSION = luup.variable_get(ARDUINO_SID, "ArduinoLibVersion", ARDUINO_DEVICE)
 
 	-- Request version info from Arduino gateway
-	sendCommandWithMessageType("0;0","INTERNAL",tonumber(tInternalTypes["VERSION"][1]),"Get Version")
+	sendCommandWithMessageType("0;0","INTERNAL",0,tonumber(tInternalTypes["VERSION"][1]),"Get Version")
 	
 end
 
