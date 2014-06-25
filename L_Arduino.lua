@@ -195,7 +195,8 @@ local function setLastUpdate(nodeDevice)
 		local timeFormat = (unit == 'M' and '%H:%M' or '%I:%M %p')			
 		setVariableIfChanged(variable[2], "LastUpdateHR", os.date(timeFormat, timestamp), nodeDevice)
 	else
-		log("Unable to update LAST_UPDATE due to missing parent node for node device " .. nodeDevice, 2)
+
+		log("Unable to update LAST_UPDATE due to missing parent node.", 2)
 	end 
 end
 
