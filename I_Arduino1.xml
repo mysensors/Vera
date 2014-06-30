@@ -33,95 +33,98 @@
     <action>
   		<serviceId>urn:upnp-org:serviceId:SwitchPower1</serviceId>
   		<name>SetTarget</name>
-  		<run>if (p ~= nil) then p.switchPower(lul_device, lul_settings.newTargetValue) end</run>
+  		<job>
+  			if (p ~= nil) then p.switchPower(lul_device, lul_settings.newTargetValue)  end  			return 4,0  		</job>
     </action>
     <action>
   		<serviceId>urn:upnp-org:serviceId:Dimming1</serviceId>
   		<name>SetLoadLevelTarget</name>
-  		<run>if (p ~= nil) then p.setDimmerLevel(lul_device, lul_settings.newLoadlevelTarget) end</run>
+  		<job>
+  			if (p ~= nil) then p.setDimmerLevel(lul_device, lul_settings.newLoadlevelTarget) end			return 4,0		</job>
     </action>
     <action>
   		<serviceId>urn:micasaverde-com:serviceId:DoorLock1</serviceId>
   		<name>SetTarget</name>
-  		<run>if (p ~= nil) then p.setLockStatus(lul_device, lul_settings.newTargetValue) end</run>
-    </action> 
-    
-       
-    
+  		<job>
+  			if (p ~= nil) then p.setLockStatus(lul_device, lul_settings.newTargetValue) end  			return 4,0  		</job>
+    </action>     
     <action>
-      		<serviceId>urn:upnp-org:serviceId:TemperatureSetpoint1_Heat</serviceId>
-      		<name>SetCurrentSetpoint</name>
-      		<run>if (p ~= nil) then p.SetTheNewTemp(lul_device, lul_settings.NewCurrentSetpoint) end</run>
+      	<serviceId>urn:upnp-org:serviceId:TemperatureSetpoint1_Heat</serviceId>
+      	<name>SetCurrentSetpoint</name>
+      	<job>
+      		if (p ~= nil) then p.SetTheNewTemp(lul_device, lul_settings.NewCurrentSetpoint)  end  			return 4,0  		</job>
     </action>
-
     <action>
-      		<serviceId>urn:upnp-org:serviceId:HVAC_UserOperatingMode1</serviceId>
-      		<name>SetModeTarget</name>
-      		<run>if (p ~= nil) then p.SetModeTarget(lul_device, lul_settings.NewModeTarget) end</run>
+      	<serviceId>urn:upnp-org:serviceId:HVAC_UserOperatingMode1</serviceId>
+      	<name>SetModeTarget</name>
+      	<job>
+      		if (p ~= nil) then p.SetModeTarget(lul_device, lul_settings.NewModeTarget) end  			return 4,0  		</job>
     </action>
-    
-    
-    
     <action>
   		<serviceId>urn:upnp-org:serviceId:WindowCovering1</serviceId>
   		<name>Up</name>
-  		<run>if (p ~= nil) then p.windowCovering(lul_device, "UP") end</run>
+  		<job>
+  			if (p ~= nil) then p.windowCovering(lul_device, "UP")  end  			return 4,0  		</job>
     </action>
     <action>
   		<serviceId>urn:upnp-org:serviceId:WindowCovering1</serviceId>
   		<name>Down</name>
-  		<run>if (p ~= nil) then p.windowCovering(lul_device, "DOWN") end</run>
+  		<job>
+  			if (p ~= nil) then p.windowCovering(lul_device, "DOWN") end  			return 4,0  		</job>
     </action>
     <action>
   		<serviceId>urn:upnp-org:serviceId:WindowCovering1</serviceId>
   		<name>Stop</name>
-  		<run>if (p ~= nil) then p.windowCovering(lul_device, "STOP") end</run>
+  		<job>
+  			if (p ~= nil) then p.windowCovering(lul_device, "STOP") end  			return 4,0  		</job>
     </action>
     <action>
     	<serviceId>urn:micasaverde-com:serviceId:SecuritySensor1</serviceId>
     	<name>SetArmed</name>
-    	<run>if (p ~= nil) then p.setArmed(lul_device, lul_settings.newArmedValue) end</run>
+    	<job>
+    		if (p ~= nil) then p.setArmed(lul_device, lul_settings.newArmedValue) end  			return 4,0  		</job>
     </action>
     <action>
   		<serviceId>urn:upnp-arduino-cc:serviceId:arduino1</serviceId>
   		<name>SendCommand</name>
-  		<run>if (p ~= nil) then p.sendCommand(lul_settings.radioId, lul_settings.variableId, lul_settings.value) end</run>
+  		<job>
+  			if (p ~= nil) then p.sendCommand(lul_settings.radioId, lul_settings.variableId, lul_settings.value) end  			return 4,0  		</job>
     </action>
     <action>
   		<serviceId>urn:upnp-arduino-cc:serviceId:arduinonode1</serviceId>
   		<name>SendNodeCommand</name>
-  		<run>if (p ~= nil) then p.sendNodeCommand(lul_device, lul_settings.variableId, lul_settings.value) end</run>
+  		<job>
+  			if (p ~= nil) then p.sendNodeCommand(lul_device, lul_settings.variableId, lul_settings.value) end  			return 4,0  		</job>
     </action>
-
     <action>
   		<serviceId>urn:upnp-arduino-cc:serviceId:arduinonode1</serviceId>
   		<name>ClearChildren</name>
-  		<run>if (p ~= nil) then p.clearChildren(lul_device) end</run>
+  		<job>
+  			if (p ~= nil) then p.clearChildren(lul_device) end  			return 4,0  		</job>
     </action>
-
     <action>
   		<serviceId>urn:upnp-arduino-cc:serviceId:arduino1</serviceId>
   		<name>SetUnit</name>
-  		<run>if (p ~= nil) then p.setUnit(lul_settings.unit) end</run>
+  		<job>
+  			if (p ~= nil) then p.setUnit(lul_settings.unit) end  			return 4,0  		</job>
     </action>
-
     <action>
   		<serviceId>urn:upnp-arduino-cc:serviceId:arduino1</serviceId>
   		<name>StartInclusion</name>
-  		<run>if (p ~= nil) then p.startInclusion(lul_device) end</run>
+  		<job>
+  			if (p ~= nil) then p.startInclusion(lul_device) end  			return 4,0  		</job>
     </action>
     <action>
   		<serviceId>urn:upnp-arduino-cc:serviceId:arduino1</serviceId>
   		<name>StopInclusion</name>
-  		<run>if (p ~= nil) then p.stopInclusion(lul_device) end</run>
+  		<job>
+  			if (p ~= nil) then p.stopInclusion(lul_device) end  			return 4,0  		</job>
     </action>
-    
-
-
     <action>
   		<serviceId>urn:upnp-org:serviceId:ArduinoIr1</serviceId>
   		<name>SendIrCommand</name>
-  		<run>if (p ~= nil) then p.sendIrCommand(lul_device, lul_settings.irCodeNumber) end</run>
+  		<job>
+  			if (p ~= nil) then p.sendIrCommand(lul_device, lul_settings.irCodeNumber) end  			return 4,0  		</job>
     </action>
     
   </actionList>
