@@ -67,7 +67,8 @@ local tDeviceTypes = {
 	ARDUINO_RELAY={18, "urn:schemas-arduino-cc:device:arduinorelay:1", "D_ArduinoRelay1.xml", "Relay "},
 	LOCK = 		  {19, "urn:micasaverde-com:serviceId:DoorLock1", "D_DoorLock1.xml", "Lock "},
 	IR = 		  {20, "urn:schemas-arduino-cc:device:ArduinoIr:1", "D_ArduinoIr1.xml", "IR "}, 
-	WATER = 	  {21, "urn:schemas-micasaverde-com:device:WaterMeter:1", "D_WaterMeter1.xml", "Water "}
+	WATER = 	  {21, "urn:schemas-micasaverde-com:device:WaterMeter:1", "D_WaterMeter1.xml", "Water "},
+	AIR_QUALITY = {22, "urn:schemas-micasaverde-com:device:AirQuality:1", "D_AirQuality1.xml", "Air Quality "}
 }
 
 local tVarLookupNumType = {}
