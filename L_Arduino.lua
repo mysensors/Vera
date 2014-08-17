@@ -118,7 +118,7 @@ local tVarTypes = {
 local tVeraTypes = {
 	BATTERY_DATE = 	{0, "urn:micasaverde-com:serviceId:HaDevice1", "BatteryDate", "" },
 	LAST_TRIP = 	{1, "urn:micasaverde-com:serviceId:SecuritySensor1", "LastTrip", "" },
-    LAST_UPDATE = 	{2, "urn:micasaverde-com:serviceId:HaDevice1", "LastUpdate", "" }
+  LAST_UPDATE = 	{2, "urn:micasaverde-com:serviceId:HaDevice1", "LastUpdate", "" }
 }
 
 local tInternalLookupNumType = {}
@@ -129,12 +129,12 @@ local tInternalTypes = {
  	ID_REQUEST = 	{3, nil, nil, nil},
  	ID_RESPONSE = 	{4, nil, nil, nil},
  	INCLUSION_MODE ={5, "urn:upnp-arduino-cc:serviceId:arduino1", "InclusionMode", "0"},
-  	CONFIG =        {6, "urn:upnp-arduino-cc:serviceId:arduinonode1", "RelayNode", ""},
-    PING = 			{7, nil, nil, nil },
-    PING_ACK =      {8, nil, nil, nil },
-    LOG_MESSAGE =   {9, nil, nil, nil },
-    CHILDREN =  	{10, "urn:upnp-arduino-cc:serviceId:arduinonode1", "Children", "0"},
-	SKETCH_NAME    = {11, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchName", ""},
+  CONFIG =        {6, "urn:upnp-arduino-cc:serviceId:arduinonode1", "RelayNode", ""},
+  PING = 			{7, nil, nil, nil },
+  PING_ACK =      {8, nil, nil, nil },
+  LOG_MESSAGE =   {9, nil, nil, nil },
+  CHILDREN =  	{10, "urn:upnp-arduino-cc:serviceId:arduinonode1", "Children", "0"},
+  SKETCH_NAME    = {11, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchName", ""},
 	SKETCH_VERSION = {12, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchVersion", ""}
 }
 
@@ -206,10 +206,10 @@ end
 local function setVariable(incomingData, childId, nodeId)
 	if (childId ~= nil) then
 		-- Set variable on child sensor.
-		local index = tonumber(incomingData[4]);
+		local index = tonumber(incomingData[5]);
 		local varType = tVarLookupNumType[index]
 		local var = tVarTypes[varType]
-		local value = incomingData[5]
+		local value = incomingData[6]
 		local timestamp = os.time()
 		if (var[2] ~= nil) then 
 			log("Setting variable '".. var[3] .. "' to value '".. value.. "'")
@@ -288,8 +288,8 @@ end
 
 
 local function presentation(incomingData, device, childId, altId)
-	local type = incomingData[4]
-	local data = incomingData[5]
+	local type = incomingData[5]
+	local data = incomingData[6]
 	local mode = luup.variable_get(ARDUINO_SID, "InclusionMode", ARDUINO_DEVICE)
 
 	if (mode == "1" and device == nil) then
@@ -312,8 +312,8 @@ local function presentation(incomingData, device, childId, altId)
 end 
 
 local function processInternalMessage(incomingData, iChildId, iAltId, incomingNodeId)
-	local data = incomingData[5]
-	local index = tonumber(incomingData[4]);
+	local data = incomingData[6]
+	local index = tonumber(incomingData[5]);
 	local varType = tInternalLookupNumType[index]
 	local var = tInternalTypes[varType]
 
@@ -413,7 +413,7 @@ end
 local function requestStatus(incomingData, childId, altId)
 	log("Requesting status for: "..altId)
 	-- A device request its current status from vera (when staring up)
-	local index = tonumber(incomingData[4]);	
+	local index = tonumber(incomingData[5]);	
 	local varType = tVarLookupNumType[index]
 	
 	-- Requested variable value from one of the sensors 
@@ -540,6 +540,7 @@ function processIncoming(s)
 		local nodeId = incomingData[1]
 		local childId = incomingData[2]
 		local messageType = incomingData[3];
+
 		local altId = nodeId .. ";" .. childId
 		local device = childIdLookupTable[altId] 
 
