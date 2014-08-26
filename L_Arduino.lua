@@ -17,7 +17,7 @@ module("L_Arduino", package.seeall)
 --
   
 local PLUGIN_NAME = "MySensors Gateway Plugin"
-local PLUGIN_VERSION = "1.4b1"
+local PLUGIN_VERSION = "1.4"
 local GATEWAY_VERSION = ""
 local IP_PORT = "5003"
 local BAUD_RATE = "115200"
@@ -68,10 +68,10 @@ local tDeviceTypes = {
 	LOCK = 		    {19, "urn:micasaverde-com:serviceId:DoorLock1", "D_DoorLock1.xml", "Lock "},
 	IR = 		      {20, "urn:schemas-arduino-cc:device:ArduinoIr:1", "D_ArduinoIr1.xml", "IR "}, 
 	WATER = 	    {21, "urn:schemas-micasaverde-com:device:WaterMeter:1", "D_WaterMeter1.xml", "Water "},
-	AIR_QUALITY = {22, "urn:schemas-micasaverde-com:device:AirQuality:1", "D_AirQuality1.xml", "Air Quality "},
+	AIR_QUALITY = {22, "urn:schemas-micasaverde-com:device:AirQuality:1", "D_AirQuality1.xml", "Air Quality "}, -- device files missing
   CUSTOM =      {23, "urn:schemas-micasaverde-com:device:GenericSensor:1", "D_GenericSensor1.xml", "Generic "}, 
-  DUST =        {24, "urn:schemas-micasaverde-com:device:Dust:1", "D_DustSensor1.xml", "Dust "},  -- These device files has not been created
-  SCENE_CONTROLLER = {25, "urn:schemas-micasaverde-com:device:SceneController:1", "D_SceneController1.xml", "SceneCtrl"}
+  DUST =        {24, "urn:schemas-micasaverde-com:device:Dust:1", "D_DustSensor1.xml", "Dust "},  -- device files missing
+  SCENE_CONTROLLER = {25, "urn:schemas-micasaverde-com:device:SceneController:1", "D_SceneController1.xml", "SceneCtrl "}
 
 }
 
@@ -114,7 +114,9 @@ local tVarTypes = {
 	FLOW = 			{34, "urn:micasaverde-com:serviceId:WaterMetering1", "Flow", "" },
 	VOLUME = 		{35, "urn:micasaverde-com:serviceId:WaterMetering1", "Volume", "0" },
 	LOCK = 		    {36, "urn:micasaverde-com:serviceId:DoorLock1", "Status", ""},
-	DUST_LEVEL =  {37, "urn:micasaverde-com:serviceId:DustSensor1", "DustLevel", ""}
+	DUST_LEVEL =  {37, "urn:micasaverde-com:serviceId:DustSensor1", "DustLevel", ""},
+  VOLTAGE =  {38, "urn:micasaverde-com:serviceId:EnergyMetering1", "Voltage", ""},
+  CURRENT =  {39, "urn:micasaverde-com:serviceId:EnergyMetering1", "Current", ""}
 }
 
 local tVeraTypes = {
@@ -179,7 +181,7 @@ function setVariableIfChanged(serviceId, name, value, deviceId)
     log(serviceId ..","..name..", "..value..", ".. deviceId)
     local curValue = luup.variable_get(serviceId, name, deviceId)
     
-    if ((value ~= curValue) or (curValue == nil)) then
+    if ((value ~= curValue) or (curValue == nil) or (serviceId == "urn:micasaverde-com:serviceId:SceneController1")) then
         luup.variable_set(serviceId, name, value, deviceId)
         return true
         
