@@ -139,7 +139,9 @@ local tInternalTypes = {
   LOG_MESSAGE =   {9, nil, nil, nil },
   CHILDREN =  	{10, "urn:upnp-arduino-cc:serviceId:arduinonode1", "Children", "0"},
   SKETCH_NAME    = {11, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchName", ""},
-	SKETCH_VERSION = {12, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchVersion", ""}
+	SKETCH_VERSION = {12, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchVersion", ""},
+	REBOOT         = {13, nil, nil, nil}, 
+	GATEWAY_READY  = {14, nil, nil, nil}
 }
 
 
@@ -407,7 +409,7 @@ local function processInternalMessage(incomingData, iChildId, iAltId, incomingNo
 		end	
 	elseif (varType == "CHILDREN") then
 		setVariableIfChanged(var[2], var[3], data, iChildId)
-	elseif (varType == "LOG_MESSAGE") then
+	elseif (varType == "LOG_MESSAGE" or varType == "GATEWAY_READY") then
 		log("Log: "..data)
 	else
 		log("Incoming internal command '" .. table.concat(incomingData, ";") .. "' discarded for child: " .. (iChildId ~= nil and iChildId or "nil"), 2)
