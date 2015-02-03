@@ -30,6 +30,11 @@
     	<sendEventsAttribute>no</sendEventsAttribute>
     	<dataType>string</dataType>
     </stateVariable>
+    <stateVariable>
+    	<name>GWAddress</name>
+    	<sendEventsAttribute>no</sendEventsAttribute>
+    	<dataType>string</dataType>
+    </stateVariable>
  </serviceStateTable>
  <actionList>
 

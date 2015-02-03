@@ -578,12 +578,14 @@ function startup(lul_device)
     
     local ipAddress = string.match(ipa, '^(%d%d?%d?%.%d%d?%d?%.%d%d?%d?%.%d%d?%d?)')
     local ipPort    = string.match(ipa, ':(%d+)$')
-    
+
+    setVariableIfChanged(ARDUINO_SID, "GWAddress", '-', ARDUINO_DEVICE)
     if (ipAddress ~= nil) then
        if (ipPort == nil) then ipPort = IP_PORT end
 
-	   log('Using network connection: IP address is '..ipAddress..':'..ipPort)
-       luup.io.open(ARDUINO_DEVICE, ipAddress, ipPort)
+      log('Using network connection: IP address is '..ipAddress..':'..ipPort)
+      luup.io.open(ARDUINO_DEVICE, ipAddress, ipPort)
+      setVariableIfChanged(ARDUINO_SID, "GWAddress", ipAddress..':'..ipPort, ARDUINO_DEVICE)
 
     else -- use serial
        log('Trying for a serial connection')
@@ -605,6 +607,7 @@ function startup(lul_device)
 	   	return false
 	   end
 	   log("Baud is ".. BAUD_RATE)
+           setVariableIfChanged(ARDUINO_SID, "GWAddress", IOdevice..'('..BAUD_RATE..')', ARDUINO_DEVICE)
     end
 
 	for i=1,MAX_RADIO_ID do 
