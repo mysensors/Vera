@@ -569,6 +569,7 @@ end
 
 
 function startup(lul_device)
+	luup.set_failure(false)
 	ARDUINO_DEVICE = lul_device
 
 	setVariableIfChanged(ARDUINO_SID, "PluginVersion", PLUGIN_VERSION, ARDUINO_DEVICE)
