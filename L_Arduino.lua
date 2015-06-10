@@ -34,6 +34,7 @@ local TASK_BUSY = 1
 local childIdLookupTable = {}
 local availableIds = {}
 local inclusionResult = {}
+local inclusionResultTitle = {}
 local includeCount = 0
 
 local msgType = { 
@@ -299,6 +300,13 @@ local function presentation(incomingData, device, childId, altId)
 	local data = incomingData[6]
 	local mode = luup.variable_get(ARDUINO_SID, "InclusionMode", ARDUINO_DEVICE)
 
+	if (mode == "1" and device ~= nil and childId ~= NODE_CHILD_ID and string.len(data)>0) then
+		-- Update sensor description (device title) during inclusion mode (for already known sensors)
+		local splitted = altId:split(";")
+		local nodeId = splitted[1]
+		luup.attr_set("name", data .. " (" .. nodeId .. ")", device)
+	end
+
 	if (mode == "1" and device == nil) then
 		-- A new sensor (not created before) was presented during inclusion mode
 		if (inclusionResult[altId] == nil) then 
@@ -306,6 +314,10 @@ local function presentation(incomingData, device, childId, altId)
 			includeCount = includeCount+1;
 			setVariableIfChanged(ARDUINO_SID, "InclusionFoundCountHR", includeCount .." devices found", ARDUINO_DEVICE)
 			inclusionResult[altId] = type
+			if (childId ~= NODE_CHILD_ID and string.len(data)>0) then
+				-- save mode decription for later
+				inclusionResultTitle[altId] = data
+			end
 		end
 	elseif (mode == "0" and device ~= nil and childId == NODE_CHILD_ID) then
 		-- Store version information if this is radio node
@@ -377,14 +389,21 @@ local function processInternalMessage(incomingData, iChildId, iAltId, incomingNo
 							child_devices = luup.chdev.start(ARDUINO_DEVICE)
 						end
 
-						if (childId == NODE_CHILD_ID) then
-							name = nodeId
-						else
-							name = nodeId .. ":" .. childId
-						end
 
 						-- append newly found sensor device
-						luup.chdev.append(ARDUINO_DEVICE, child_devices, altId, "Arduino " .. deviceType[4]..name, deviceType[2],deviceType[3],"","",false)
+						name = inclusionResultTitle[altId]
+						if (name == nil) then
+							if (childId == NODE_CHILD_ID) then
+								name = nodeId
+							else
+								name = childId .. " (" .. nodeId .. ")" 
+							end
+							name = "Arduino " .. deviceType[4]..name
+						else
+							name = name .. " (" .. nodeId .. ")"
+						end
+
+						luup.chdev.append(ARDUINO_DEVICE, child_devices, altId, name, deviceType[2],deviceType[3],"","",false)
 						newDevices = newDevices + 1		
 					else 
 						log("Found unknown device type ".. deviceType ..". Inclusion aborted. Please try again.", 1)
