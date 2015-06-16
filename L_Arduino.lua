@@ -164,7 +164,9 @@ local function printTable(list, i)
     return listString .. ', ' .. printTable(list, i + 1)
 end
 
-
+function string.starts(String,Start)
+   return string.sub(String,1,string.len(Start))==Start
+end
 
 local function log(text, level)
 	if(type(text) == 'table') then
@@ -300,8 +302,9 @@ local function presentation(incomingData, device, childId, altId)
 	local data = incomingData[6]
 	local mode = luup.variable_get(ARDUINO_SID, "InclusionMode", ARDUINO_DEVICE)
 
-	if (mode == "1" and device ~= nil and childId ~= NODE_CHILD_ID and string.len(data)>0) then
+	if (mode == "1" and device ~= nil and childId ~= NODE_CHILD_ID and string.len(data)>0 and (not string.starts(data,"1."))) then
 		-- Update sensor description (device title) during inclusion mode (for already known sensors)
+		-- We ignore names starting with "1." because old sensors sent version number in payload
 		local splitted = altId:split(";")
 		local nodeId = splitted[1]
 		luup.attr_set("name", data .. " (" .. nodeId .. ")", device)
