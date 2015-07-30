@@ -52,14 +52,32 @@
       	<serviceId>urn:upnp-org:serviceId:TemperatureSetpoint1_Heat</serviceId>
       	<name>SetCurrentSetpoint</name>
       	<job>
-      		if (p ~= nil) then p.SetTheNewTemp(lul_device, lul_settings.NewCurrentSetpoint)  end  			return 4,0  		</job>
+      		if (p ~= nil) then p.SetpointHeat(lul_device, lul_settings.NewCurrentSetpoint)  end  			return 4,0  		</job>
+    </action>
+    <action>
+      	<serviceId>urn:upnp-org:serviceId:TemperatureSetpoint1_Cool</serviceId>
+      	<name>SetCurrentSetpoint</name>
+      	<job>
+      		if (p ~= nil) then p.SetpointCool(lul_device, lul_settings.NewCurrentSetpoint)  end
+  			return 4,0
+  		</job>
     </action>
     <action>
       	<serviceId>urn:upnp-org:serviceId:HVAC_UserOperatingMode1</serviceId>
       	<name>SetModeTarget</name>
       	<job>
-      		if (p ~= nil) then p.SetModeTarget(lul_device, lul_settings.NewModeTarget) end  			return 4,0  		</job>
+      		if (p ~= nil) then p.SetOperatingMode(lul_device, lul_settings.NewModeTarget) end  			return 4,0  		</job>
     </action>
+    <action>
+      	<serviceId>urn:upnp-org:serviceId:HVAC_UserOperatingMode1</serviceId>
+      	<name>SetMode</name>
+      	<job>
+      		if (p ~= nil) then p.SetFanMode(lul_device, lul_settings.NewMode) end
+  			return 4,0
+  		</job>
+    </action>
+
+
     <action>
   		<serviceId>urn:upnp-org:serviceId:WindowCovering1</serviceId>
   		<name>Up</name>

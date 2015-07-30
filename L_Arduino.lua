@@ -58,7 +58,7 @@ local tDeviceTypes = {
 	BARO = 		  {8,  "urn:schemas-micasaverde-com:device:BarometerSensor:1", "D_BarometerSensor1.xml", "Baro "},
 	WIND = 		  {9,  "urn:schemas-micasaverde-com:device:WindSensor:1", "D_WindSensor1.xml", "Wind "},
 	RAIN = 		  {10, "urn:schemas-micasaverde-com:device:RainSensor:1", "D_RainSensor1.xml", "Rain "},
-	UV = 		    {11, "urn:schemas-micasaverde-com:device:UvSensor:1", "D_UvSensor1.xml", "UV "},
+	UV = 		  {11, "urn:schemas-micasaverde-com:device:UvSensor:1", "D_UvSensor1.xml", "UV "},
 	WEIGHT = 	  {12, "urn:schemas-micasaverde-com:device:ScaleSensor:1", "D_ScaleSensor1.xml", "Weight "},
 	POWER = 	  {13, "urn:schemas-micasaverde-com:device:PowerMeter:1", "D_PowerMeter1.xml", "Power "},
 	HEATER = 	  {14, "urn:schemas-upnp-org:device:Heater:1", "D_Heater1.xml", "Heater "},
@@ -66,14 +66,26 @@ local tDeviceTypes = {
 	LIGHT_LEVEL=  {16, "urn:schemas-micasaverde-com:device:LightSensor:1", "D_LightSensor1.xml", "Light "},
 	ARDUINO_NODE= {17, "urn:schemas-arduino-cc:device:arduinonode:1", "D_ArduinoNode1.xml", "Node "},
 	ARDUINO_RELAY={18, "urn:schemas-arduino-cc:device:arduinorelay:1", "D_ArduinoRelay1.xml", "Repeater "},
-	LOCK = 		    {19, "urn:micasaverde-com:serviceId:DoorLock1", "D_DoorLock1.xml", "Lock "},
-	IR = 		      {20, "urn:schemas-arduino-cc:device:ArduinoIr:1", "D_ArduinoIr1.xml", "IR "}, 
-	WATER = 	    {21, "urn:schemas-micasaverde-com:device:WaterMeter:1", "D_WaterMeter1.xml", "Water "},
-	AIR_QUALITY = {22, "urn:schemas-micasaverde-com:device:AirQuality:1", "D_AirQuality1.xml", "Air Quality "}, -- device files missing
-  CUSTOM =      {23, "urn:schemas-micasaverde-com:device:GenericSensor:1", "D_GenericSensor1.xml", "Generic "}, 
-  DUST =        {24, "urn:schemas-micasaverde-com:device:Dust:1", "D_DustSensor1.xml", "Dust "},  -- device files missing
-  SCENE_CONTROLLER = {25, "urn:schemas-micasaverde-com:device:SceneController:1", "D_SceneController1.xml", "SceneCtrl "}
+	LOCK = 		  {19, "urn:micasaverde-com:serviceId:DoorLock1", "D_DoorLock1.xml", "Lock "},
+	IR = 		  {20, "urn:schemas-arduino-cc:device:ArduinoIr:1", "D_ArduinoIr1.xml", "IR "}, -- Not implemented
+	WATER = 	  {21, "urn:schemas-micasaverde-com:device:WaterMeter:1", "D_WaterMeter1.xml", "Water "},
+	AIR_QUALITY = {22, "urn:schemas-micasaverde-com:device:LightSensor:1", "D_LightSensor1.xml", "Air Quality "}, -- Not implemented. Using Light sensor for now
+  	CUSTOM =      {23, "urn:schemas-micasaverde-com:device:GenericSensor:1", "D_GenericSensor1.xml", "Generic "}, 
+  	DUST =        {24, "urn:schemas-micasaverde-com:device:LightSensor:1", "D_LightSensor1.xml", "Dust "},  -- Not implemented, Using light sensor for now
+  	SCENE_CONTROLLER = {25, "urn:schemas-micasaverde-com:device:SceneController:1", "D_SceneController1.xml", "SceneCtrl "},
 
+  	RGB_LIGHT = {26, "urn:schemas-upnp-org:device:RGBController:1", "D_RGBController1.xml", "RGB Light "}, -- Not implemented, New device files needed
+  	RGBW_LIGHT = {27, "urn:schemas-upnp-org:device:RGBController:1", "D_RGBController1.xml", "RGBW Light "}, -- Not implemented. New device files needed
+  	COLOR_SENSOR = {28, "urn:schemas-upnp-org:device:RGBController:1", "D_LightSensor1.xml", "Color "}, -- Not implemented. New device files needed
+
+	HVAC = {29, "urn:schemas-upnp-org:device:HVAC_ZoneThermostat:1", "D_HVAC_ZoneThermostat1.xml", "HVAC "}, 
+
+	MULTIMETER = {30, "urn:schemas-micasaverde-com:device:GenericSensor:1", "D_GenericSensor1.xml", "Generic "}, -- Not implemented, Should handle V_VOLTAGE, V_CURRENT, V_IMPEDANCE 
+	SPRINKLER =  {31,  "urn:schemas-upnp-org:device:BinaryLight:1", "D_BinaryLight1.xml", "Sprinkler "}, -- Not implemented, using binary light for now
+	WATER_LEAK = {32,  "urn:schemas-micasaverde-com:device:DoorSensor:1", "D_DoorSensor1.xml", "Water leak "}, -- Not implemented, using door sensor for now
+	SOUND = {33, "urn:schemas-micasaverde-com:device:LightSensor:1", "D_LightSensor1.xml", "Sound "},  --  V_LEVEL (dB) not implemented, using light sensor for now 
+	VIBRATION = {34,  "urn:schemas-micasaverde-com:device:DoorSensor:1", "D_DoorSensor1.xml", "Vibration "}, -- V_LEVEL (Hz) not implemented, using light sensor for now
+	MOISTURE = {35,  "urn:schemas-micasaverde-com:device:LightSensor:1", "D_LightSensor1.xml", "Moisture "} -- V_LEVEL (?) not implemented, using light sensor for now
 }
 
 local tVarLookupNumType = {}
@@ -99,8 +111,8 @@ local tVarTypes = {
 	KWH = 			{18, "urn:micasaverde-com:serviceId:EnergyMetering1", "KWH", "0" },
 	SCENE_ON = 		{19, "urn:micasaverde-com:serviceId:SceneController1", "sl_SceneActivated", "" },
 	SCENE_OFF = 	{20, "urn:micasaverde-com:serviceId:SceneController1", "sl_SceneDeactivated", "" },
-	HEATER = 		{21, "urn:upnp-org:serviceId:TemperatureSetpoint1_Heat", "CurrentSetpoint", "" },
-	HEATER_SW = 	{22, "urn:upnp-org:serviceId:HVAC_UserOperatingMode1", "ModeStatus", "" },
+	HVAC_FLOW_STATE = {21, "urn:upnp-org:serviceId:HVAC_UserOperatingMode1", "ModeStatus", "" },
+	HVAC_FLOW_SPEED = {22, "urn:upnp-org:serviceId:HVAC_Speed", "Speed", "" },  -- Unsupported on Vera
 	LIGHT_LEVEL = 	{23, "urn:micasaverde-com:serviceId:LightSensor1", "CurrentLevel", "" },
 	VAR_1 = 		{24, "urn:upnp-org:serviceId:VContainer1", "Variable1", ""},
 	VAR_2 = 		{25, "urn:upnp-org:serviceId:VContainer1", "Variable2", ""},
@@ -115,15 +127,24 @@ local tVarTypes = {
 	FLOW = 			{34, "urn:micasaverde-com:serviceId:WaterMetering1", "Flow", "" },
 	VOLUME = 		{35, "urn:micasaverde-com:serviceId:WaterMetering1", "Volume", "0" },
 	LOCK = 		    {36, "urn:micasaverde-com:serviceId:DoorLock1", "Status", ""},
-	DUST_LEVEL =  {37, "urn:micasaverde-com:serviceId:DustSensor1", "DustLevel", ""},
-  VOLTAGE =  {38, "urn:micasaverde-com:serviceId:EnergyMetering1", "Voltage", ""},
-  CURRENT =  {39, "urn:micasaverde-com:serviceId:EnergyMetering1", "Current", ""}
+	LEVEL =  		{37, "urn:micasaverde-com:serviceId:LightSensor1", "CurrentLevel", ""}, -- Temporary fix for MOISTURE, VIBRATION, SOUND we should probably create a new devicetype/variable for this 
+	VOLTAGE =  		{38, "urn:micasaverde-com:serviceId:EnergyMetering1", "Voltage", ""},
+	CURRENT =  		{39, "urn:micasaverde-com:serviceId:EnergyMetering1", "Current", ""},
+
+	RGB =  			{40, "urn:upnp-org:serviceId:RGBController1", "SensorId", "SetColorTarget"}, -- Not implemented
+	RGBW =  		{41, "urn:upnp-org:serviceId:RGBController1", "SensorId", "SetColorTarget"}, -- Not implemented
+
+	SENSOR_ID =  	{42, "urn:micasaverde-com:serviceId:MySensor1", "SensorId", ""},
+	UNIT_PREFIX =  	{43, "urn:micasaverde-com:serviceId:MySensor1", "UnitPrefix", ""}, -- Currently unused in GUI on vera
+	HVAC_FLOW_MODE = {44, "urn:upnp-org:serviceId:HVAC_FanOperatingMode1", "Mode", "" },
+	HVAC_SETPOINT_HEAT = {45, "urn:upnp-org:serviceId:TemperatureSetpoint1_Heat", "CurrentSetpoint", "" },
+	HVAC_SETPOINT_COOL = {46, "urn:upnp-org:serviceId:TemperatureSetpoint1_Cool", "CurrentSetpoint", "" }
 }
 
 local tVeraTypes = {
 	BATTERY_DATE = 	{0, "urn:micasaverde-com:serviceId:HaDevice1", "BatteryDate", "" },
 	LAST_TRIP = 	{1, "urn:micasaverde-com:serviceId:SecuritySensor1", "LastTrip", "" },
-  LAST_UPDATE = 	{2, "urn:micasaverde-com:serviceId:HaDevice1", "LastUpdate", "" }
+	LAST_UPDATE = 	{2, "urn:micasaverde-com:serviceId:HaDevice1", "LastUpdate", "" }
 }
 
 local tInternalLookupNumType = {}
@@ -134,12 +155,12 @@ local tInternalTypes = {
  	ID_REQUEST = 	{3, nil, nil, nil},
  	ID_RESPONSE = 	{4, nil, nil, nil},
  	INCLUSION_MODE ={5, "urn:upnp-arduino-cc:serviceId:arduino1", "InclusionMode", "0"},
-  CONFIG =        {6, "urn:upnp-arduino-cc:serviceId:arduinonode1", "RelayNode", ""},
-  PING = 			{7, nil, nil, nil },
-  PING_ACK =      {8, nil, nil, nil },
-  LOG_MESSAGE =   {9, nil, nil, nil },
-  CHILDREN =  	{10, "urn:upnp-arduino-cc:serviceId:arduinonode1", "Children", "0"},
-  SKETCH_NAME    = {11, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchName", ""},
+ 	CONFIG =        {6, "urn:upnp-arduino-cc:serviceId:arduinonode1", "RelayNode", ""},
+ 	PING = 			{7, nil, nil, nil },
+ 	PING_ACK =      {8, nil, nil, nil },
+ 	LOG_MESSAGE =   {9, nil, nil, nil },
+ 	CHILDREN =  	{10, "urn:upnp-arduino-cc:serviceId:arduinonode1", "Children", "0"},
+ 	SKETCH_NAME    = {11, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchName", ""},
 	SKETCH_VERSION = {12, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchVersion", ""},
 	REBOOT         = {13, nil, nil, nil}, 
 	GATEWAY_READY  = {14, nil, nil, nil}
@@ -526,14 +547,21 @@ end
 
 
 -- Heater commands
-function SetTheNewTemp(device, NewCurrentSetpoint)
-	sendCommand(luup.devices[device].id,"HEATER",NewCurrentSetpoint)
+function SetpointHeat(device, NewCurrentSetpoint)
+	sendCommand(luup.devices[device].id,"HVAC_SETPOINT_HEAT",NewCurrentSetpoint)
 end
 
-function SetModeTarget(device, NewModeTarget)
-	sendCommand(luup.devices[device].id,"HEATER_SW",NewModeTarget)
+function SetpointCool(device, NewCurrentSetpoint)
+	sendCommand(luup.devices[device].id,"HVAC_SETPOINT_COOL",NewCurrentSetpoint)
 end
 
+function SetOperatingMode(device, NewModeTarget)
+	sendCommand(luup.devices[device].id,"HVAC_FLOW_STATE",NewModeTarget)
+end
+
+function SetFanMode(device, NewMode)
+	sendCommand(luup.devices[device].id,"HVAC_FLOW_MODE",NewMode)
+end
 
 
 -- Security commands
