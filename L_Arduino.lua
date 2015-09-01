@@ -21,6 +21,7 @@ local PLUGIN_VERSION = "1.4"
 local GATEWAY_VERSION = ""
 local IP_PORT = "5003"
 local BAUD_RATE = "115200"
+local ALTUI_SID = "urn:upnp-org:serviceId:altui1" 
 local ARDUINO_SID = "urn:upnp-arduino-cc:serviceId:arduino1"
 local VARIABLE_CONTAINER_SID = "urn:upnp-org:serviceId:VContainer1"
 local MAX_RADIO_ID=255
@@ -226,8 +227,10 @@ local function setLastUpdate(nodeDevice)
 	
 		-- Set the last update in a human readable form for display on the console
 		local unit = luup.variable_get(ARDUINO_SID, "Unit", ARDUINO_DEVICE)
-		local timeFormat = (unit == 'M' and '%H:%M' or '%I:%M %p')			
-		setVariableIfChanged(variable[2], "LastUpdateHR", os.date(timeFormat, timestamp), nodeDevice)
+		local timeFormat = (unit == 'M' and '%H:%M' or '%I:%M %p')		
+		local t = os.date(timeFormat, timestamp)
+		setVariableIfChanged(ALTUI_SID, "DisplayLine2", "... at " .. t, nodeDevice)
+		setVariableIfChanged(variable[2], "LastUpdateHR", t, nodeDevice)
 	else
 
 		log("Unable to update LAST_UPDATE due to missing parent node.", 2)
@@ -285,18 +288,14 @@ local function task(text, mode)
 	end
 end
 
-local function clearTask()
+function clearTask()
 	task("Clearing...", TASK_SUCCESS)
 end
  
 local function nextAvailiableRadioId()
-	for i=1,255 do 
-		if (availableIds[i] == true) then
-			availableIds[i] = false
-			return i
-		end
-	end
-	return 255
+  local id = next (availableIds) or MAX_RADIO_ID 
+  availableIds[id] = nil
+  return id
 end
  
 -- Function to send a message to sensor
@@ -366,6 +365,9 @@ local function processInternalMessage(incomingData, iChildId, iAltId, incomingNo
 		setVariableIfChanged(ARDUINO_SID, "ArduinoLibVersion", GATEWAY_VERSION, ARDUINO_DEVICE)
 	elseif ((varType == "SKETCH_NAME" or varType == "SKETCH_VERSION") and iChildId ~= nil) then
 		-- Store the Sketch name and Version
+      if varType == "SKETCH_NAME" then
+        setVariableIfChanged (ALTUI_SID, "DisplayLine1", "sketch: " .. (data or '?'), iChildId)
+      end
 		setVariableIfChanged(var[2], var[3], data, iChildId)
 	elseif (varType == "TIME") then
 		-- Request time was sent from one of the sensors
@@ -572,22 +574,17 @@ end
 
 function updateLookupTables(radioId, childId, deviceId)
  	childIdLookupTable[radioId..";"..childId] = deviceId
- 	availableIds[radioId] = false
+ 	availableIds[radioId] = nil
 end
 
 -- splits a string by a pattern
 -- returns an array of the pieces
 function string:split(delimiter)
-	local result = { }
-	local from  = 1
-	local delim_from, delim_to = string.find( self, delimiter, from  )
-	while delim_from do
-		table.insert( result, string.sub( self, from , delim_from-1 ) )
-		from  = delim_to + 1
-		delim_from, delim_to = string.find( self, delimiter, from  )
-	end
-	table.insert( result, string.sub( self, from  ) )
-	return result
+  local result = { }
+  for x in self:gmatch ("([^" .. delimiter .. "]+)") do
+    result[#result+1] = x 
+  end
+  return result
 end
 
 function processIncoming(s)
@@ -636,6 +633,7 @@ function startup(lul_device)
       log('Using network connection: IP address is '..ipAddress..':'..ipPort)
       luup.io.open(ARDUINO_DEVICE, ipAddress, ipPort)
       setVariableIfChanged(ARDUINO_SID, "GWAddress", ipAddress..':'..ipPort, ARDUINO_DEVICE)
+      setVariableIfChanged (ALTUI_SID, "DisplayLine1", "gateway: " .. ipAddress .. ':' .. ipPort, ARDUINO_DEVICE)
 
     else -- use serial
        log('Trying for a serial connection')
@@ -661,7 +659,7 @@ function startup(lul_device)
     end
 
 	for i=1,MAX_RADIO_ID do 
-		availableIds[i] = true;
+		availableIds[i] = true
 	end
 
 	-- build an lookup table for child device ids (altid -> id)
@@ -671,7 +669,7 @@ function startup(lul_device)
 			childIdLookupTable[v.id] = k
 			local split = v.id:split(";")
 			local radioId = tonumber(split[1])
-			availableIds[radioId] = false;
+			availableIds[radioId] = nil
 		end
 	end
 
