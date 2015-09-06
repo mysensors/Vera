@@ -37,10 +37,31 @@
   			if (p ~= nil) then p.switchPower(lul_device, lul_settings.newTargetValue)  end  			return 4,0  		</job>
     </action>
     <action>
+      <serviceId>urn:micasaverde-com:serviceId:HaDevice1</serviceId>
+      <name>ToggleState</name>
+      <run>
+        local status = luup.variable_get("urn:upnp-org:serviceId:SwitchPower1", "Status", lul_device)
+		if(status=="0") then
+			p.switchPower(lul_device, 1) 
+			return 4,0
+		else
+			p.switchPower(lul_device, 0) 
+			return 4,0
+		end
+      </run>
+    </action>
+    <action>
   		<serviceId>urn:upnp-org:serviceId:Dimming1</serviceId>
   		<name>SetLoadLevelTarget</name>
   		<job>
-  			if (p ~= nil) then p.setDimmerLevel(lul_device, lul_settings.newLoadlevelTarget) end			return 4,0		</job>
+  			if (p ~= nil) then 
+				p.setDimmerLevel(lul_device, lul_settings.newLoadlevelTarget) 
+				if(lul_settings.newLoadlevelTarget ~= "0")then
+					luup.variable_set("urn:upnp-org:serviceId:SwitchPower1","Status",1,lul_device)
+				else
+					luup.variable_set("urn:upnp-org:serviceId:SwitchPower1","Status",0,lul_device)
+				end
+			end			return 4,0		</job>
     </action>
     <action>
   		<serviceId>urn:micasaverde-com:serviceId:DoorLock1</serviceId>
