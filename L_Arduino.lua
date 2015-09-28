@@ -566,6 +566,7 @@ end
 
 -- Security commands
 function setArmed(device, newArmedValue)
+	sendCommand(luup.devices[device].id,"ARMED",newArmedValue)
 	setVariableIfChanged(tVarTypes.ARMED[2], tVarTypes.ARMED[3], newArmedValue, device)
 end
 
