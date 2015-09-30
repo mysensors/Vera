@@ -80,7 +80,7 @@ local tDeviceTypes = {
 
 	HVAC = {29, "urn:schemas-upnp-org:device:HVAC_ZoneThermostat:1", "D_HVAC_ZoneThermostat1.xml", "HVAC "}, 
 
-	MULTIMETER = {30, "urn:schemas-micasaverde-com:device:GenericSensor:1", "D_GenericSensor1.xml", "Generic "}, -- Not implemented, Should handle V_VOLTAGE, V_CURRENT, V_IMPEDANCE 
+        MULTIMETER = {30, "urn:schemas-micasaverde-com:device:EnergyMetering:1", "D_Multimeter1.xml", "Multimeter "},
 	SPRINKLER =  {31,  "urn:schemas-upnp-org:device:BinaryLight:1", "D_BinaryLight1.xml", "Sprinkler "}, -- Not implemented, using binary light for now
 	WATER_LEAK = {32,  "urn:schemas-micasaverde-com:device:DoorSensor:1", "D_DoorSensor1.xml", "Water leak "}, -- Not implemented, using door sensor for now
 	SOUND = {33, "urn:schemas-micasaverde-com:device:LightSensor:1", "D_LightSensor1.xml", "Sound "},  --  V_LEVEL (dB) not implemented, using light sensor for now 
