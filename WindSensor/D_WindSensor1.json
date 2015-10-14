@@ -223,7 +223,7 @@
                 {
                     "id": 1,
                     "dataType": "i2",
-                    "name": "AVGSpeedValue",
+                    "name": "AVGSpeed",
                     "comparisson": ">",
                     "prefix": {
                         "lang_tag": "speed",
@@ -252,7 +252,7 @@
                 {
                     "id": 1,
                     "dataType": "i2",
-                    "name": "GustSpeedValue",
+                    "name": "GustSpeed",
                     "comparisson": ">",
                     "prefix": {
                         "lang_tag": "speed",
