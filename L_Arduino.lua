@@ -566,6 +566,10 @@ function SetFanMode(device, NewMode)
 	sendCommand(luup.devices[device].id,"HVAC_FLOW_MODE",NewMode)
 end
 
+function SetLcdText(device, NewText)
+	sendCommand(luup.devices[device].id, "TEXT", NewText)
+	setVariableIfChanged(tVarTypes.TEXT[2], tVarTypes.TEXT[3], NewText, device)
+end
 
 -- Security commands
 function setArmed(device, newArmedValue)
