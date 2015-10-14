@@ -1,0 +1,155 @@
+{
+    "flashicon": "icons\/intro.png",
+    "imgIconBody": "",
+    "imgIconDimmable": "",
+    "imgIconTurnable": "",
+    "imgIconMin": "",
+    "imgIconMax": "",
+    "halloIconsDir": "pics/hallo",
+    "inScene": "0",
+    "DisplayStatus": {},
+    "doc_url": {
+        "doc_language": 1,
+        "doc_manual": 1,
+        "doc_version": 1,
+        "doc_platform": 0,
+        "doc_page": "sensors"
+    },
+    "Tabs": [
+        {
+            "Label": {
+                "lang_tag": "tabname_control",
+                "text": "Information"
+            },
+            "Position": "0",
+            "TabType": "flash",
+            "SceneGroup": [
+                {
+                    "id": "1",
+                    "top": "1.0",
+                    "left": "0",
+                    "x": "2",
+                    "y": "2"
+                }
+            ],
+            "ControlGroup": [
+                {
+                    "id": "1",
+                    "scenegroup": "1",
+                    "type": "info"
+                }
+	    ],
+            "Control": [
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "Lcdtext",
+                        "text": "Current Text:"
+                    },
+                    "Display": {
+                        "Top": 55,
+                        "Left": 50,
+                        "Width": 75,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlGroup": "1",
+                    "ControlPair": "1",
+                    "ControlHeader": "1",
+                    "top": "0.25",
+                    "left": "0",
+                    "x": "1",
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:upnp-org:serviceId:LcdText1",
+                        "Variable": "LcdText",
+                        "Top": 55,
+                        "Left": 150,
+                        "Width": 600,
+                        "Height": 20
+                    }
+                },
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "Lcdtext",
+                        "text": "New Text:"
+                    },
+                    "Display": {
+                        "Top": 84,
+                        "Left": 50,
+                        "Width": 75,
+                        "Height": 20 
+                    }
+                },
+		{
+		    "ControlType": "input",
+		    "ID": "NewLcdText",
+		    "Display": {
+			"Top": 80,
+			"Left": 150,
+			"Width": 300,
+			"Height": 20
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "Label": {
+			"lang_tag": "cmd_add",
+			"text": "Set New Text"
+		    },
+		    "Display": {
+			"Top": 80,
+			"Left": 470,
+			"Width": 110,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:upnp-org:serviceId:LcdText1",
+			"Action": "SetLcdText",
+			"Parameters": [
+			    {
+				"Name": "NewLcdText",
+				"ID": "NewLcdText"
+			    }
+			]
+		    }
+		},	
+		 
+            ]
+        },
+        {
+            "Label": {
+                "lang_tag": "advanced",
+                "text": "Advanced"
+            },
+            "Position": "1",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "advanced_device"
+        },
+        {
+            "Label": {
+                "lang_tag": "logs",
+                "text": "Logs"
+            },
+            "Position": "2",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "device_logs"
+        },
+        {
+            "Label": {
+                "lang_tag": "notifications",
+                "text": "Notifications"
+            },
+            "Position": "3",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "device_notifications"
+        }
+    ],
+    "eventList2": [ ],
+    "DeviceType": "urn:schemas-micasaverde-com:device:LcdText:1"
+}

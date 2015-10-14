@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <serviceStateTable>
+      <stateVariable>
+      	<name>LcdText</name>
+      	<sendEventsAttribute>yes</sendEventsAttribute>
+      	<dataType>string</dataType>
+	<shortCode>LcdText</shortCode>
+      </stateVariable>
+  </serviceStateTable>
+  <actionList>
+  	<action>
+  		<name>SetLcdText</name>
+  		<argumentList>
+  			<argument>
+  				<name>NewLcdText</name>
+  				<direction>in</direction>
+				<relatedStateVariable>LcdText</relatedStateVariable>
+			</argument>
+		</argumentList>
+	</action>
+</actionList>
+</scpd>

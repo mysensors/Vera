@@ -80,12 +80,14 @@ local tDeviceTypes = {
 
 	HVAC = {29, "urn:schemas-upnp-org:device:HVAC_ZoneThermostat:1", "D_HVAC_ZoneThermostat1.xml", "HVAC "}, 
 
-	MULTIMETER = {30, "urn:schemas-micasaverde-com:device:GenericSensor:1", "D_GenericSensor1.xml", "Generic "}, -- Not implemented, Should handle V_VOLTAGE, V_CURRENT, V_IMPEDANCE 
+	MULTIMETER = {30, "urn:schemas-arduino-cc:device:EnergyMetering:1", "D_Multimeter1.xml", "Multimeter "}, -- Handles V_VOLTAGE, V_CURRENT, V_IMPEDANCE 
 	SPRINKLER =  {31,  "urn:schemas-upnp-org:device:BinaryLight:1", "D_BinaryLight1.xml", "Sprinkler "}, -- Not implemented, using binary light for now
 	WATER_LEAK = {32,  "urn:schemas-micasaverde-com:device:DoorSensor:1", "D_DoorSensor1.xml", "Water leak "}, -- Not implemented, using door sensor for now
 	SOUND = {33, "urn:schemas-micasaverde-com:device:LightSensor:1", "D_LightSensor1.xml", "Sound "},  --  V_LEVEL (dB) not implemented, using light sensor for now 
 	VIBRATION = {34,  "urn:schemas-micasaverde-com:device:DoorSensor:1", "D_DoorSensor1.xml", "Vibration "}, -- V_LEVEL (Hz) not implemented, using light sensor for now
-	MOISTURE = {35,  "urn:schemas-micasaverde-com:device:LightSensor:1", "D_LightSensor1.xml", "Moisture "} -- V_LEVEL (?) not implemented, using light sensor for now
+	MOISTURE = {35,  "urn:schemas-micasaverde-com:device:LightSensor:1", "D_LightSensor1.xml", "Moisture "}, -- V_LEVEL (?) not implemented, using light sensor for now
+	INFO  = {36,  "urn:schemas-micasaverde-com:device:LcdText:1", "D_LcdText1.xml", "LCD text "}, --  LCD text device / Simple information device on controller, V_TEXT
+	GAS   = {37,  "urn:schemas-micasaverde-com:device:GasMeter:1", "D_GasMeter1.xml", "Gas "}, -- Not implemented, Should handle V_FLOW, V_VOLUME not implemented
 }
 
 local tVarLookupNumType = {}
@@ -138,7 +140,8 @@ local tVarTypes = {
 	UNIT_PREFIX =  	{43, "urn:micasaverde-com:serviceId:MySensor1", "UnitPrefix", ""}, -- Currently unused in GUI on vera
 	HVAC_FLOW_MODE = {44, "urn:upnp-org:serviceId:HVAC_FanOperatingMode1", "Mode", "" },
 	HVAC_SETPOINT_HEAT = {45, "urn:upnp-org:serviceId:TemperatureSetpoint1_Heat", "CurrentSetpoint", "" },
-	HVAC_SETPOINT_COOL = {46, "urn:upnp-org:serviceId:TemperatureSetpoint1_Cool", "CurrentSetpoint", "" }
+	HVAC_SETPOINT_COOL = {46, "urn:upnp-org:serviceId:TemperatureSetpoint1_Cool", "CurrentSetpoint", "" },
+	TEXT		   = {47, "urn:upnp-org:serviceId:LcdText1", "LcdText", "" },	-- S_INFO. Text message to display on LCD or controller device
 }
 
 local tVeraTypes = {
@@ -563,6 +566,10 @@ function SetFanMode(device, NewMode)
 	sendCommand(luup.devices[device].id,"HVAC_FLOW_MODE",NewMode)
 end
 
+function SetLcdText(device, NewText)
+	sendCommand(luup.devices[device].id, "TEXT", NewText)
+	setVariableIfChanged(tVarTypes.TEXT[2], tVarTypes.TEXT[3], NewText, device)
+end
 
 -- Security commands
 function setArmed(device, newArmedValue)
