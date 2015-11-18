@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <serviceStateTable>
+   <stateVariable sendEvents="yes">
+      <name>Recording</name>
+      <sendEventsAttribute>yes</sendEventsAttribute>
+      <dataType>boolean</dataType>
+      <defaultValue>0</defaultValue>
+      <shortCode>recording</shortCode>
+    </stateVariable>
+  </serviceStateTable>
+  <serviceStateTable>
+   <stateVariable sendEvents="yes">
+      <name>IrCode</name>
+      <sendEventsAttribute>yes</sendEventsAttribute>
+      <dataType>string</dataType>
+      <defaultValue>-</defaultValue>
+      <shortCode>IrCode</shortCode>
+    </stateVariable>
+  </serviceStateTable>
+  <actionList>
+  <action>
+      <name>RecordIrCode</name>
+      <argumentList>
+        <argument>
+          <name>Index</name>
+          <direction>in</direction>
+          <name>CodeName</name>
+          <direction>in</direction>
+        </argument>
+      </argumentList>
+    </action>	
+    <action>
+      <name>SendIrCode</name>
+      <argumentList>
+          <name>Index</name>
+          <direction>in</direction>
+      </argumentList>
+    </action>
+</actionList>
+</scpd>
