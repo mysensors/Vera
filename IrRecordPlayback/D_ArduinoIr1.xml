@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <device>
+    <deviceType>urn:schemas-arduino-cc:device:ArduinoIr:1</deviceType>
+    <Category_Num>10</Category_Num>
+	<staticJson>D_ArduinoIr1.json</staticJson>
+    <serviceList>
+      <service>
+        <serviceType>urn:schemas-arduino-cc:service:ArduinoIr:1</serviceType>
+        <serviceId>urn:schemas-arduino-cc:serviceId:ArduinoIr1</serviceId>
+        <SCPDURL>S_ArduinoIr1.xml</SCPDURL>
+      </service>
+    </serviceList>
+  </device>
+</root
