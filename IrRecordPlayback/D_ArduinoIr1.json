@@ -1,0 +1,1255 @@
+{
+    "flashicon": "http://192.10.1.126/images/RemoteControl.png",
+    "imgIconBody": "",
+    "imgIconDimmable": "",
+    "imgIconTurnable": "",
+    "imgIconMin": "",
+    "imgIconMax": "",
+    "halloIconsDir": "pics/hallo",
+    "state_icons": [
+        "RemoteControl_0.png",
+        "RemoteControl_100.png"
+    ],
+    "x": "2",
+    "y": "4",
+    "inScene": "1",
+    "DisplayStatus": {
+        "Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+        "Variable": "Recording",
+        "MinValue": "0",
+        "MaxValue": "1"
+    },
+    "doc_url": {
+        "doc_language": 1,
+        "doc_manual": 1,
+        "doc_version": 1,
+        "doc_platform": 0,
+        "doc_page": "sensors"
+    },
+    "Tabs": [
+        {
+            "Label": {
+                "lang_tag": "tabname_control",
+                "text": "Information"
+            },
+            "Position": "0",
+            "TabType": "flash",
+            "SceneGroup": [
+                {
+                    "id": "1",
+                    "top": "0",
+                    "left": "0",
+                    "x": "2",
+                    "y": "2"
+                }
+            ],
+            "ControlGroup": [
+                {
+                    "id": "1",
+                    "scenegroup": "1"
+                }
+	    ],
+            "Control": [
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "IrCode",
+                        "text": "<b>Preset  1:<b/>"
+                    },
+                    "Display": {
+                        "Top": 15,
+                        "Left": 45,
+                        "Width": 75,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "ControlGroup": "1",
+                    "top": "0.4",
+                    "left": "0",
+                    "x": "1",
+                    "y": "1",
+                    "Display": {
+                        "Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+                        "Variable": "IrCodeName1",
+                        "Top": 15,
+                        "Left": 110,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "NewName",
+                        "text": "<b>New name:<b/>"
+                    },
+                    "Display": {
+                        "Top": 15,
+                        "Left": 220,
+                        "Width": 50,
+                        "Height": 20 
+                    }
+                },
+		{
+		    "ControlType": "input",
+		    "ID": "NewIrText1",
+		    "Display": {
+			"Top": 10,
+			"Left": 300,
+			"Width": 120,
+			"Height": 20
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "Label": {
+			"lang_tag": "cmd_add",
+			"text": "Record IR"
+		    },
+		    "Display": {
+			"Top": 10,
+			"Left": 450,
+			"Width": 90,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "RecordIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "1"
+			    },
+			    {
+				"Name": "CodeName",
+				"ID": "NewIrText1"
+			    }
+			]
+		    }
+		},
+		{
+   		    "ControlGroup": "1",
+		    "ControlType": "button",
+		    "top": "0.0",
+                    "left": "0",
+                    "x": "1",
+                    "y": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": ""
+		    },
+		    "Display": {
+			"Top": 10,
+			"Left": 550,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "1"
+			    }
+			]
+		    }
+		},
+
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "IrCode",
+                        "text": "<b>Preset  2:<b/>"
+                    },
+                    "Display": {
+                        "Top": 45,
+                        "Left": 45,
+                        "Width": 75,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlGroup": "1",
+                    "top": "1.1",
+                    "left": "0",
+                    "x": "1",
+                    "y": "1",
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+                        "Variable": "IrCodeName2",
+                        "Top": 45,
+                        "Left": 110,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "NewName",
+                        "text": "<b>New name:<b/>"
+                    },
+                    "Display": {
+                        "Top": 45,
+                        "Left": 220,
+                        "Width": 50,
+                        "Height": 20 
+                    }
+                },
+		{
+		    "ControlType": "input",
+		    "ID": "NewIrText2",
+		    "Display": {
+			"Top": 40,
+			"Left": 300,
+			"Width": 120,
+			"Height": 20
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "Label": {
+			"lang_tag": "cmd_add",
+			"text": "Record IR"
+		    },
+		    "Display": {
+			"Top": 40,
+			"Left": 450,
+			"Width": 90,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "RecordIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "2"
+			    },
+			    {
+				"Name": "CodeName",
+				"ID": "NewIrText2"
+			    }
+			]
+		    }
+		},	
+		{
+   		    "ControlGroup": "1",
+		    "ControlType": "button",
+		    "top": "1.1",
+                    "left": "0",
+                    "x": "1",
+                    "y": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": ""
+		    },
+		    "Display": {
+			"Top": 40,
+			"Left": 550,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "2"
+			    }
+			]
+		    }
+		},
+
+		 
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "IrCode",
+                        "text": "<b>Preset  3:<b/>"
+                    },
+                    "Display": {
+                        "Top": 75,
+                        "Left": 45,
+                        "Width": 75,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "ControlGroup": "1",
+                    "top": "1.8",
+                    "left": "0",
+                    "x": "1",
+                    "y": "1",
+                    "Display": {
+                        "Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+                        "Variable": "IrCodeName3",
+                        "Top": 75,
+                        "Left": 110,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "NewName",
+                        "text": "<b>New name:<b/>"
+                    },
+                    "Display": {
+                        "Top": 75,
+                        "Left": 220,
+                        "Width": 50,
+                        "Height": 20 
+                    }
+                },
+		{
+		    "ControlType": "input",
+		    "ID": "NewIrText3",
+		    "Display": {
+			"Top": 70,
+			"Left": 300,
+			"Width": 120,
+			"Height": 20
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "Label": {
+			"lang_tag": "cmd_add",
+			"text": "Record IR"
+		    },
+		    "Display": {
+			"Top": 70,
+			"Left": 450,
+			"Width": 90,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "RecordIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "3"
+			    },
+			    {
+				"Name": "CodeName",
+				"ID": "NewIrText3"
+			    }
+			]
+		    }
+		},
+		{
+  		    "ControlGroup": "1",
+		    "ControlType": "button",
+		    "top": "1.8",
+                    "left": "0",
+                    "x": "1",
+                    "y": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": ""
+		    },
+		    "Display": {
+			"Top": 70,
+			"Left": 550,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "3"
+			    }
+			]
+		    }
+		},
+
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "IrCode",
+                        "text": "<b>Preset  4:<b/>"
+                    },
+                    "Display": {
+                        "Top": 105,
+                        "Left": 45,
+                        "Width": 75,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlType": "variable",
+  		    "ControlGroup": "1",
+                    "top": "2.5",
+                    "left": "0",
+                    "x": "1",
+                    "y": "1",
+                    "Display": {
+                        "Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+                        "Variable": "IrCodeName4",
+                        "Top": 105,
+                        "Left": 110,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "NewName",
+                        "text": "<b>New name:<b/>"
+                    },
+                    "Display": {
+                        "Top": 105,
+                        "Left": 220,
+                        "Width": 50,
+                        "Height": 20 
+                    }
+                },
+		{
+		    "ControlType": "input",
+		    "ID": "NewIrText4",
+		    "Display": {
+			"Top": 100,
+			"Left": 300,
+			"Width": 120,
+			"Height": 20
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "Label": {
+			"lang_tag": "cmd_add",
+			"text": "Record IR"
+		    },
+		    "Display": {
+			"Top": 100,
+			"Left": 450,
+			"Width": 90,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "RecordIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "4"
+			    },
+			    {
+				"Name": "CodeName",
+				"ID": "NewIrText4"
+			    }
+			]
+		    }
+		},
+		{
+  		    "ControlGroup": "1",
+		    "ControlType": "button",
+		    "top": "2.5",
+                    "left": "0",
+                    "x": "1",
+                    "y": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": ""
+		    },
+		    "Display": {
+			"Top": 100,
+			"Left": 550,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "4"
+			    }
+			]
+		    }
+		},
+
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "IrCode",
+                        "text": "<b>Preset  5:<b/>"
+                    },
+                    "Display": {
+                        "Top": 135,
+                        "Left": 45,
+                        "Width": 75,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlType": "variable",
+  		    "ControlGroup": "1",
+                    "top": "3.2",
+                    "left": "0",
+                    "x": "1",
+                    "y": "1",
+                    "Display": {
+                        "Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+                        "Variable": "IrCodeName5",
+                        "Top": 135,
+                        "Left": 110,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "NewName",
+                        "text": "<b>New name:<b/>"
+                    },
+                    "Display": {
+                        "Top": 135,
+                        "Left": 220,
+                        "Width": 50,
+                        "Height": 20 
+                    }
+                },
+		{
+		    "ControlType": "input",
+		    "ID": "NewIrText5",
+		    "Display": {
+			"Top": 130,
+			"Left": 300,
+			"Width": 120,
+			"Height": 20
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "Label": {
+			"lang_tag": "cmd_add",
+			"text": "Record IR"
+		    },
+		    "Display": {
+			"Top": 130,
+			"Left": 450,
+			"Width": 90,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "RecordIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "5"
+			    },
+			    {
+				"Name": "CodeName",
+				"ID": "NewIrText5"
+			    }
+			]
+		    }
+		},
+		{
+  		    "ControlGroup": "1",
+		    "ControlType": "button",
+		    "top": "3.2",
+                    "left": "0",
+                    "x": "1",
+                    "y": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": ""
+		    },
+		    "Display": {
+			"Top": 130,
+			"Left": 550,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "5"
+		    }
+			]
+		    }
+		},
+
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "IrCode",
+                        "text": "<b>Preset  6:<b/>"
+                    },
+                    "Display": {
+                        "Top": 165,
+                        "Left": 45,
+                        "Width": 75,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "ControlGroup": "1",
+                    "top": "0.4",
+                    "left": "1",
+                    "x": "1",
+                    "y": "1",
+                    "Display": {
+                        "Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+                        "Variable": "IrCodeName6",
+                        "Top": 165,
+                        "Left": 110,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "NewName",
+                        "text": "<b>New name:<b/>"
+                    },
+                    "Display": {
+                        "Top": 165,
+                        "Left": 220,
+                        "Width": 50,
+                        "Height": 20 
+                    }
+                },
+		{
+		    "ControlType": "input",
+		    "ID": "NewIrText6",
+		    "Display": {
+			"Top": 160,
+			"Left": 300,
+			"Width": 120,
+			"Height": 20
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "Label": {
+			"lang_tag": "cmd_add",
+			"text": "Record IR"
+		    },
+		    "Display": {
+			"Top": 160,
+			"Left": 450,
+			"Width": 90,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "RecordIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "6"
+			    },
+			    {
+				"Name": "CodeName",
+				"ID": "NewIrText6"
+			    }
+			]
+		    }
+		},
+		{
+   		    "ControlGroup": "1",
+		    "ControlType": "button",
+		    "top": "0.0",
+                    "left": "1",
+                    "x": "1",
+                    "y": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": ""
+		    },
+		    "Display": {
+			"Top": 160,
+			"Left": 550,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "6"
+			    }
+			]
+		    }
+		},
+
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "IrCode",
+                        "text": "<b>Preset  7:<b/>"
+                    },
+                    "Display": {
+                        "Top": 195,
+                        "Left": 45,
+                        "Width": 75,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "ControlGroup": "1",
+                    "top": "1.1",
+                    "left": "1",
+                    "x": "1",
+                    "y": "1",
+                    "Display": {
+                        "Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+                        "Variable": "IrCodeName7",
+                        "Top": 195,
+                        "Left": 110,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "NewName",
+                        "text": "<b>New name:<b/>"
+                    },
+                    "Display": {
+                        "Top": 195,
+                        "Left": 220,
+                        "Width": 50,
+                        "Height": 20 
+                    }
+                },
+		{
+		    "ControlType": "input",
+		    "ID": "NewIrText7",
+		    "Display": {
+			"Top": 190,
+			"Left": 300,
+			"Width": 120,
+			"Height": 20
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "Label": {
+			"lang_tag": "cmd_add",
+			"text": "Record IR"
+		    },
+		    "Display": {
+			"Top": 190,
+			"Left": 450,
+			"Width": 90,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "RecordIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "7"
+			    },
+			    {
+				"Name": "CodeName",
+				"ID": "NewIrText7"
+			    }
+			]
+		    }
+		},
+		{
+   		    "ControlGroup": "1",
+		    "ControlType": "button",
+		    "top": "1.1",
+                    "left": "1",
+                    "x": "1",
+                    "y": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": ""
+		    },
+		    "Display": {
+			"Top": 190,
+			"Left": 550,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "7"
+			    }
+			]
+		    }
+		},
+
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "IrCode",
+                        "text": "<b>Preset  8:<b/>"
+                    },
+                    "Display": {
+                        "Top": 225,
+                        "Left": 45,
+                        "Width": 75,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "ControlGroup": "1",
+                    "top": "1.8",
+                    "left": "1",
+                    "x": "1",
+                    "y": "1",
+                    "Display": {
+                        "Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+                        "Variable": "IrCodeName8",
+                        "Top": 225,
+                        "Left": 110,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "NewName",
+                        "text": "<b>New name:<b/>"
+                    },
+                    "Display": {
+                        "Top": 225,
+                        "Left": 220,
+                        "Width": 50,
+                        "Height": 20 
+                    }
+                },
+		{
+		    "ControlType": "input",
+		    "ID": "NewIrText8",
+		    "Display": {
+			"Top": 220,
+			"Left": 300,
+			"Width": 120,
+			"Height": 20
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "Label": {
+			"lang_tag": "cmd_add",
+			"text": "Record IR"
+		    },
+		    "Display": {
+			"Top": 220,
+			"Left": 450,
+			"Width": 90,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "RecordIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "8"
+			    },
+			    {
+				"Name": "CodeName",
+				"ID": "NewIrText8"
+			    }
+			]
+		    }
+		},
+		{
+  		    "ControlGroup": "1",
+		    "ControlType": "button",
+		    "top": "1.8",
+                    "left": "1",
+                    "x": "1",
+                    "y": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": ""
+		    },
+		    "Display": {
+			"Top": 220,
+			"Left": 550,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "8"
+			    }
+			]
+		    }
+		},
+
+
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "IrCode",
+                        "text": "<b>Preset  9:<b/>"
+                    },
+                    "Display": {
+                        "Top": 255,
+                        "Left": 45,
+                        "Width": 75,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlType": "variable",
+      		    "ControlGroup": "1",
+                    "top": "2.5",
+                    "left": "1",
+                    "x": "1",
+                    "y": "1",
+                    "Display": {
+                        "Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+                        "Variable": "IrCodeName9",
+                        "Top": 255,
+                        "Left": 110,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "NewName",
+                        "text": "<b>New name:<b/>"
+                    },
+                    "Display": {
+                        "Top": 255,
+                        "Left": 220,
+                        "Width": 50,
+                        "Height": 20 
+                    }
+                },
+		{
+		    "ControlType": "input",
+		    "ID": "NewIrText9",
+		    "Display": {
+			"Top": 250,
+			"Left": 300,
+			"Width": 120,
+			"Height": 20
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "Label": {
+			"lang_tag": "cmd_add",
+			"text": "Record IR"
+		    },
+		    "Display": {
+			"Top": 250,
+			"Left": 450,
+			"Width": 90,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "RecordIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "9"
+			    },
+			    {
+				"Name": "CodeName",
+				"ID": "NewIrText9"
+			    }
+			]
+		    }
+		},
+		{
+  		    "ControlGroup": "1",
+		    "ControlType": "button",
+		    "top": "2.5",
+                    "left": "1",
+                    "x": "1",
+                    "y": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": ""
+		    },
+		    "Display": {
+			"Top": 250,
+			"Left": 550,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "9"
+			    }
+			]
+		    }
+		},
+
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "IrCode",
+                        "text": "<b>Preset 10:<b/>"
+                    },
+                    "Display": {
+                        "Top": 285,
+                        "Left": 45,
+                        "Width": 75,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlType": "variable",
+      		    "ControlGroup": "1",
+                    "top": "3.2",
+                    "left": "1",
+                    "x": "1",
+                    "y": "1",
+                    "Display": {
+                        "Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+                        "Variable": "IrCodeName10",
+                        "Top": 285,
+                        "Left": 110,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+		{
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "NewName",
+                        "text": "<b>New name:<b/>"
+                    },
+                    "Display": {
+                        "Top": 285,
+                        "Left": 220,
+                        "Width": 50,
+                        "Height": 20 
+                    }
+                },
+		{
+		    "ControlType": "input",
+		    "ID": "NewIrText10",
+		    "Display": {
+			"Top": 280,
+			"Left": 300,
+			"Width": 120,
+			"Height": 20
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "Label": {
+			"lang_tag": "cmd_add",
+			"text": "Record IR"
+		    },
+		    "Display": {
+			"Top": 280,
+			"Left": 450,
+			"Width": 90,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "RecordIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "10"
+			    },
+			    {
+				"Name": "CodeName",
+				"ID": "NewIrText10"
+			    }
+			]
+		    }
+		},
+		{
+  		    "ControlGroup": "1",
+		    "ControlType": "button",
+		    "top": "3.2",
+                    "left": "1",
+                    "x": "1",
+                    "y": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": ""
+		    },
+		    "Display": {
+			"Top": 280,
+			"Left": 550,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "10"
+		    	    }
+			]
+		    }
+		},
+
+		{
+                    "ControlType": "label",
+       		    "ControlGroup": "1",
+                    "top": "3.2",
+                    "left": "-1.4",
+                    "x": "1",
+                    "y": "1",
+                    "Label": {
+                        "lang_tag": "IrCode",
+                        "text": "<b>Last #<b/>"
+                    },
+                    "Display": {
+                        "Top": 315,
+                        "Left": 45,
+                        "Width": 75,
+                        "Height": 20 
+                    }
+                },
+                {
+                    "ControlType": "variable",
+      		    "ControlGroup": "1",
+                    "top": "3.2",
+                    "left": "-0.9",
+                    "x": "1",
+                    "y": "1",
+                    "Display": {
+                        "Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+                        "Variable": "IrCode",
+                        "Top": 315,
+                        "Left": 120,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                }
+		 
+            ]
+        },
+        {
+            "Label": {
+                "lang_tag": "advanced",
+                "text": "Advanced"
+            },
+            "Position": "1",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "advanced_device"
+        },
+        {
+            "Label": {
+                "lang_tag": "logs",
+                "text": "Logs"
+            },
+            "Position": "2",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "device_logs"
+        },
+        {
+            "Label": {
+                "lang_tag": "notifications",
+                "text": "Notifications"
+            },
+            "Position": "3",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "device_notifications"
+        }
+    ],
+
+    "sceneList": {
+        "group_1": {
+	    "cmd_1": {
+                "label": "Send IR code of preset",
+                "serviceId": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+                "action": "SendIrCode",
+
+                "argumentList": {
+                    "argument_1" : {
+                        "dataType": "ui1",
+                        "defaultValue": "1",
+                        "allowedValueRange" : {
+                            "minimum": "0",
+                            "maximum": "10" 
+                        },
+                        "prefix": "#",
+                        "name": "SendIrCode" 
+                    } 
+                } 
+            }
+        } 
+    },
+    "eventList2": [
+	{
+            "id": 1,
+            "label": {
+                "lang_tag": "ircode_received",
+                "text": "An IR code has been received"
+            },
+            "serviceId": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+            "argumentList": [
+                {
+                     "id": 1,
+                     "dataType": "ui1",
+                     "defaultValue": "1",
+                     "allowedValueRange" : {
+                        "minimum": "0",
+                        "maximum": "10" 
+                    },
+                    "name": "IrCode",
+                    "comparisson": "=",
+                    "prefix": {
+                        "lang_tag": "number",
+                        "text": "#"
+                    },
+                    "suffix": {}
+                }
+            ]
+        }
+    ],
+    "DeviceType": "urn:schemas-arduino-cc:device:ArduinoIr:1"
+}
