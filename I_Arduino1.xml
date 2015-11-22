@@ -190,12 +190,21 @@
   		</job>
     </action>
     <action>
-  		<serviceId>urn:upnp-org:serviceId:ArduinoIr1</serviceId>
-  		<name>SendIrCommand</name>
+  		<serviceId>urn:schemas-arduino-cc:serviceId:ArduinoIr1</serviceId>
+  		<name>SendIrCode</name>
   		<job>
-  			if (p ~= nil) then p.sendIrCommand(lul_device, lul_settings.irCodeNumber) end
+  			if (p ~= nil) then p.sendIrCommand(lul_device, lul_settings.Index) end
   			return 4,0
   		</job>
+    </action>
+    <action>
+  	   	<serviceId>urn:schemas-arduino-cc:serviceId:ArduinoIr1</serviceId>
+	     	<name>RecordIrCode</name>
+	     	<job>
+			luup.log("Record IR code #" .. lul_settings.Index .. " with name: " .. lul_settings.CodeName)
+  			if (p ~= nil) then p.recordIrCode(lul_device, lul_settings.Index, lul_settings.CodeName) end
+			return 4,0
+	     	</job>
     </action>
     <action>
   		<serviceId>urn:upnp-org:serviceId:LcdText1</serviceId>
