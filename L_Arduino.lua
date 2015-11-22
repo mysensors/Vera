@@ -17,7 +17,7 @@ module("L_Arduino", package.seeall)
 --
   
 local PLUGIN_NAME = "MySensors Gateway Plugin"
-local PLUGIN_VERSION = "1.4"
+local PLUGIN_VERSION = "1.5"
 local GATEWAY_VERSION = ""
 local IP_PORT = "5003"
 local BAUD_RATE = "115200"
@@ -67,7 +67,7 @@ local tDeviceTypes = {
 	ARDUINO_NODE= {17, "urn:schemas-arduino-cc:device:arduinonode:1", "D_ArduinoNode1.xml", "Node "},
 	ARDUINO_RELAY={18, "urn:schemas-arduino-cc:device:arduinorelay:1", "D_ArduinoRelay1.xml", "Repeater "},
 	LOCK = 		  {19, "urn:micasaverde-com:serviceId:DoorLock1", "D_DoorLock1.xml", "Lock "},
-	IR = 		  {20, "urn:schemas-arduino-cc:device:ArduinoIr:1", "D_ArduinoIr1.xml", "IR "}, -- Not implemented
+	IR = 		  {20, "urn:schemas-arduino-cc:device:ArduinoIr:1", "D_ArduinoIr1.xml", "IR "},
 	WATER = 	  {21, "urn:schemas-micasaverde-com:device:WaterMeter:1", "D_WaterMeter1.xml", "Water "},
 	AIR_QUALITY = {22, "urn:schemas-micasaverde-com:device:LightSensor:1", "D_LightSensor1.xml", "Air Quality "}, -- Not implemented. Using Light sensor for now
   	CUSTOM =      {23, "urn:schemas-micasaverde-com:device:GenericSensor:1", "D_GenericSensor1.xml", "Generic "}, 
@@ -88,6 +88,7 @@ local tDeviceTypes = {
 	MOISTURE = {35,  "urn:schemas-micasaverde-com:device:LightSensor:1", "D_LightSensor1.xml", "Moisture "}, -- V_LEVEL (?) not implemented, using light sensor for now
 	INFO  = {36,  "urn:schemas-micasaverde-com:device:LcdText:1", "D_LcdText1.xml", "LCD text "}, --  LCD text device / Simple information device on controller, V_TEXT
 	GAS   = {37,  "urn:schemas-micasaverde-com:device:GasMeter:1", "D_GasMeter1.xml", "Gas "}, -- Not implemented, Should handle V_FLOW, V_VOLUME not implemented
+	GPS =   {38, "urn:schemas-arduino-cc:device:ArduinoGPS:1", "D_ArduinoGPS1.xml", "IR "}  -- Not implemented, Should handle V_POSITION not implemented
 }
 
 local tVarLookupNumType = {}
@@ -124,8 +125,8 @@ local tVarTypes = {
 	UP = 		    {29, nil, nil, ""},
 	DOWN = 		    {30, nil, nil, ""},
 	STOP = 			{31, nil, nil, ""},
-	IR_SEND =		{32, nil, nil, ""},
-	IR_RECEIVE = 	{33, "urn:upnp-org:serviceId:ArduinoIr1", "IrCode", ""},
+	IR_SEND =		{32, "urn:schemas-arduino-cc:serviceId:ArduinoIr1", "IrCode", ""},
+	IR_RECEIVE = 		{33, "urn:schemas-arduino-cc:serviceId:ArduinoIr1", "IrCode", ""},
 	FLOW = 			{34, "urn:micasaverde-com:serviceId:WaterMetering1", "Flow", "" },
 	VOLUME = 		{35, "urn:micasaverde-com:serviceId:WaterMetering1", "Volume", "0" },
 	LOCK = 		    {36, "urn:micasaverde-com:serviceId:DoorLock1", "Status", ""},
@@ -141,7 +142,10 @@ local tVarTypes = {
 	HVAC_FLOW_MODE = {44, "urn:upnp-org:serviceId:HVAC_FanOperatingMode1", "Mode", "" },
 	HVAC_SETPOINT_HEAT = {45, "urn:upnp-org:serviceId:TemperatureSetpoint1_Heat", "CurrentSetpoint", "" },
 	HVAC_SETPOINT_COOL = {46, "urn:upnp-org:serviceId:TemperatureSetpoint1_Cool", "CurrentSetpoint", "" },
-	TEXT		   = {47, "urn:upnp-org:serviceId:LcdText1", "LcdText", "" },	-- S_INFO. Text message to display on LCD or controller device
+	TEXT =          {47, "urn:upnp-org:serviceId:LcdText1", "LcdText", "" },	-- S_INFO. Text message to display on LCD or controller device
+	CUSTOM =        {48, "urn:micasaverde-com:serviceId:MySensor1", "Custom", "" }, -- Not implemented S_CUSTOM device type.
+	POSITION =      {49, "urn:micasaverde-com:serviceId:MySensor1", "Position", "" },  -- Not implemented  GPS position and altitude
+	IR_RECORD =     {50, "urn:schemas-arduino-cc:serviceId:ArduinoIr1", "Recording", ""}  -- S_IR_RECORD message
 }
 
 local tVeraTypes = {
@@ -536,9 +540,13 @@ function switchPower(device, newTargetValue)
 end
 
 function sendIrCommand(device, irCodeNumber)
-	sendCommand(luup.devices[device].id,"IR_SEND",irCodeNumber)
+        sendCommand(luup.devices[device].id,"IR_SEND",irCodeNumber)
 end
 
+function recordIrCode(device, irCodeNumber, newIrCodeName)
+	setVariableIfChanged(tVarTypes.IR_RECORD[2], "IrCodeName" .. irCodeNumber, newIrCodeName, device)
+	sendCommand(luup.devices[device].id,"IR_RECORD", irCodeNumber) 
+end
 
 function setDimmerLevel(device, newLoadlevelTarget)
 	sendCommand(luup.devices[device].id,"DIMMER",newLoadlevelTarget)
@@ -712,7 +720,3 @@ function startup(lul_device)
 	sendCommandWithMessageType("0;0","INTERNAL",0,tonumber(tInternalTypes["VERSION"][1]),"Get Version")
 	
 end
-
-
-
-
