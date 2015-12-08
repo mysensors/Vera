@@ -1162,10 +1162,260 @@
                         "Variable": "IrCode",
                         "Top": 315,
                         "Left": 120,
-                        "Width": 120,
+                        "Width": 20,
                         "Height": 20
                     }
-                }
+                },
+                	{
+		    "ControlType": "button",
+		    "top": "3.2",
+                    "left": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": "P11"
+		    },
+		    "Display": {
+			"Top": 310,
+			"Left": 165,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "11"
+		    	    }
+			]
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "top": "3.2",
+                    "left": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": "P12"
+		    },
+		    "Display": {
+			"Top": 310,
+			"Left": 210,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "12"
+		    	    }
+			]
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "top": "3.2",
+                    "left": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": "P13"
+		    },
+		    "Display": {
+			"Top": 310,
+			"Left": 255,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "13"
+		    	    }
+			]
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "top": "3.2",
+                    "left": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": "P14"
+		    },
+		    "Display": {
+			"Top": 310,
+			"Left": 300,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "14"
+		    	    }
+			]
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "top": "3.2",
+                    "left": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": "P15"
+		    },
+		    "Display": {
+			"Top": 310,
+			"Left": 345,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "15"
+		    	    }
+			]
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "top": "3.2",
+                    "left": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": "P16"
+		    },
+		    "Display": {
+			"Top": 310,
+			"Left": 390,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "16"
+		    	    }
+			]
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "top": "3.2",
+                    "left": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": "P17"
+		    },
+		    "Display": {
+			"Top": 310,
+			"Left": 435,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "17"
+		    	    }
+			]
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "top": "3.2",
+                    "left": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": "P18"
+		    },
+		    "Display": {
+			"Top": 310,
+			"Left": 480,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "18"
+		    	    }
+			]
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "top": "3.2",
+                    "left": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": "P19"
+		    },
+		    "Display": {
+			"Top": 310,
+			"Left": 525,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "19"
+		    	    }
+			]
+		    }
+		},
+		{
+		    "ControlType": "button",
+		    "top": "3.2",
+                    "left": "1",
+		    "Label": {
+			"lang_tag": "cmd_on",
+			"text": "P20"
+		    },
+		    "Display": {
+			"Top": 310,
+			"Left": 570,
+			"Width": 40,
+			"Height": 20
+		    },
+		    "Command": {
+			"Service": "urn:schemas-arduino-cc:serviceId:ArduinoIr1",
+			"Action": "SendIrCode",
+			"Parameters": [
+			    {
+				"Name": "Index",
+				"Value": "20"
+		    	    }
+			]
+		    }
+		}
 		 
             ]
         },
