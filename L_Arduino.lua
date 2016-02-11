@@ -367,7 +367,7 @@ local function processInternalMessage(incomingData, iChildId, iAltId, incomingNo
 	local varType = tInternalLookupNumType[index]
 	local var = tInternalTypes[varType]
 
-	if (varType == "VERSION" and iAltId == "0;0") then
+	if (varType == "VERSION" and iAltId == "0;255") then
 		-- Store version of Arduino Gateway
 		GATEWAY_VERSION = data
 		setVariableIfChanged(ARDUINO_SID, "ArduinoLibVersion", GATEWAY_VERSION, ARDUINO_DEVICE)
