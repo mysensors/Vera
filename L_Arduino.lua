@@ -17,7 +17,7 @@ module("L_Arduino", package.seeall)
 --
   
 local PLUGIN_NAME = "MySensors Gateway Plugin"
-local PLUGIN_VERSION = "1.4"
+local PLUGIN_VERSION = "1.5"
 local GATEWAY_VERSION = ""
 local IP_PORT = "5003"
 local BAUD_RATE = "115200"
@@ -34,6 +34,7 @@ local TASK_BUSY = 1
 local childIdLookupTable = {}
 local availableIds = {}
 local inclusionResult = {}
+local inclusionResultTitle = {}
 local includeCount = 0
 
 local msgType = { 
@@ -57,7 +58,7 @@ local tDeviceTypes = {
 	BARO = 		  {8,  "urn:schemas-micasaverde-com:device:BarometerSensor:1", "D_BarometerSensor1.xml", "Baro "},
 	WIND = 		  {9,  "urn:schemas-micasaverde-com:device:WindSensor:1", "D_WindSensor1.xml", "Wind "},
 	RAIN = 		  {10, "urn:schemas-micasaverde-com:device:RainSensor:1", "D_RainSensor1.xml", "Rain "},
-	UV = 		    {11, "urn:schemas-micasaverde-com:device:UvSensor:1", "D_UvSensor1.xml", "UV "},
+	UV = 		  {11, "urn:schemas-micasaverde-com:device:UvSensor:1", "D_UvSensor1.xml", "UV "},
 	WEIGHT = 	  {12, "urn:schemas-micasaverde-com:device:ScaleSensor:1", "D_ScaleSensor1.xml", "Weight "},
 	POWER = 	  {13, "urn:schemas-micasaverde-com:device:PowerMeter:1", "D_PowerMeter1.xml", "Power "},
 	HEATER = 	  {14, "urn:schemas-upnp-org:device:Heater:1", "D_Heater1.xml", "Heater "},
@@ -65,14 +66,29 @@ local tDeviceTypes = {
 	LIGHT_LEVEL=  {16, "urn:schemas-micasaverde-com:device:LightSensor:1", "D_LightSensor1.xml", "Light "},
 	ARDUINO_NODE= {17, "urn:schemas-arduino-cc:device:arduinonode:1", "D_ArduinoNode1.xml", "Node "},
 	ARDUINO_RELAY={18, "urn:schemas-arduino-cc:device:arduinorelay:1", "D_ArduinoRelay1.xml", "Repeater "},
-	LOCK = 		    {19, "urn:micasaverde-com:serviceId:DoorLock1", "D_DoorLock1.xml", "Lock "},
-	IR = 		      {20, "urn:schemas-arduino-cc:device:ArduinoIr:1", "D_ArduinoIr1.xml", "IR "}, 
-	WATER = 	    {21, "urn:schemas-micasaverde-com:device:WaterMeter:1", "D_WaterMeter1.xml", "Water "},
-	AIR_QUALITY = {22, "urn:schemas-micasaverde-com:device:AirQuality:1", "D_AirQuality1.xml", "Air Quality "}, -- device files missing
-  CUSTOM =      {23, "urn:schemas-micasaverde-com:device:GenericSensor:1", "D_GenericSensor1.xml", "Generic "}, 
-  DUST =        {24, "urn:schemas-micasaverde-com:device:Dust:1", "D_DustSensor1.xml", "Dust "},  -- device files missing
-  SCENE_CONTROLLER = {25, "urn:schemas-micasaverde-com:device:SceneController:1", "D_SceneController1.xml", "SceneCtrl "}
+	LOCK = 		  {19, "urn:micasaverde-com:serviceId:DoorLock1", "D_DoorLock1.xml", "Lock "},
+	IR = 		  {20, "urn:schemas-arduino-cc:device:ArduinoIr:1", "D_ArduinoIr1.xml", "IR "},
+	WATER = 	  {21, "urn:schemas-micasaverde-com:device:WaterMeter:1", "D_WaterMeter1.xml", "Water "},
+	AIR_QUALITY = {22, "urn:schemas-micasaverde-com:device:LightSensor:1", "D_LightSensor1.xml", "Air Quality "}, -- Not implemented. Using Light sensor for now
+  	CUSTOM =      {23, "urn:schemas-micasaverde-com:device:GenericSensor:1", "D_GenericSensor1.xml", "Generic "}, 
+  	DUST =        {24, "urn:schemas-micasaverde-com:device:LightSensor:1", "D_LightSensor1.xml", "Dust "},  -- Not implemented, Using light sensor for now
+  	SCENE_CONTROLLER = {25, "urn:schemas-micasaverde-com:device:SceneController:1", "D_SceneController1.xml", "SceneCtrl "},
 
+  	RGB_LIGHT = {26, "urn:schemas-upnp-org:device:RGBController:1", "D_RGBController1.xml", "RGB Light "}, -- Not implemented, New device files needed
+  	RGBW_LIGHT = {27, "urn:schemas-upnp-org:device:RGBController:1", "D_RGBController1.xml", "RGBW Light "}, -- Not implemented. New device files needed
+  	COLOR_SENSOR = {28, "urn:schemas-upnp-org:device:RGBController:1", "D_LightSensor1.xml", "Color "}, -- Not implemented. New device files needed
+
+	HVAC = {29, "urn:schemas-upnp-org:device:HVAC_ZoneThermostat:1", "D_HVAC_ZoneThermostat1.xml", "HVAC "}, 
+
+	MULTIMETER = {30, "urn:schemas-arduino-cc:device:EnergyMetering:1", "D_Multimeter1.xml", "Multimeter "}, -- Handles V_VOLTAGE, V_CURRENT, V_IMPEDANCE 
+	SPRINKLER =  {31,  "urn:schemas-upnp-org:device:BinaryLight:1", "D_BinaryLight1.xml", "Sprinkler "}, -- Not implemented, using binary light for now
+	WATER_LEAK = {32,  "urn:schemas-micasaverde-com:device:DoorSensor:1", "D_DoorSensor1.xml", "Water leak "}, -- Not implemented, using door sensor for now
+	SOUND = {33, "urn:schemas-micasaverde-com:device:LightSensor:1", "D_LightSensor1.xml", "Sound "},  --  V_LEVEL (dB) not implemented, using light sensor for now 
+	VIBRATION = {34,  "urn:schemas-micasaverde-com:device:DoorSensor:1", "D_DoorSensor1.xml", "Vibration "}, -- V_LEVEL (Hz) not implemented, using light sensor for now
+	MOISTURE = {35,  "urn:schemas-micasaverde-com:device:LightSensor:1", "D_LightSensor1.xml", "Moisture "}, -- V_LEVEL (?) not implemented, using light sensor for now
+	INFO  = {36,  "urn:schemas-micasaverde-com:device:LcdText:1", "D_LcdText1.xml", "LCD text "}, --  LCD text device / Simple information device on controller, V_TEXT
+	GAS   = {37,  "urn:schemas-micasaverde-com:device:GasMeter:1", "D_GasMeter1.xml", "Gas "}, -- Not implemented, Should handle V_FLOW, V_VOLUME not implemented
+	GPS =   {38, "urn:schemas-arduino-cc:device:ArduinoGPS:1", "D_ArduinoGPS1.xml", "IR "}  -- Not implemented, Should handle V_POSITION not implemented
 }
 
 local tVarLookupNumType = {}
@@ -98,8 +114,8 @@ local tVarTypes = {
 	KWH = 			{18, "urn:micasaverde-com:serviceId:EnergyMetering1", "KWH", "0" },
 	SCENE_ON = 		{19, "urn:micasaverde-com:serviceId:SceneController1", "sl_SceneActivated", "" },
 	SCENE_OFF = 	{20, "urn:micasaverde-com:serviceId:SceneController1", "sl_SceneDeactivated", "" },
-	HEATER = 		{21, "urn:upnp-org:serviceId:TemperatureSetpoint1_Heat", "CurrentSetpoint", "" },
-	HEATER_SW = 	{22, "urn:upnp-org:serviceId:HVAC_UserOperatingMode1", "ModeStatus", "" },
+	HVAC_FLOW_STATE = {21, "urn:upnp-org:serviceId:HVAC_UserOperatingMode1", "ModeStatus", "" },
+	HVAC_FLOW_SPEED = {22, "urn:upnp-org:serviceId:HVAC_Speed", "Speed", "" },  -- Unsupported on Vera
 	LIGHT_LEVEL = 	{23, "urn:micasaverde-com:serviceId:LightSensor1", "CurrentLevel", "" },
 	VAR_1 = 		{24, "urn:upnp-org:serviceId:VContainer1", "Variable1", ""},
 	VAR_2 = 		{25, "urn:upnp-org:serviceId:VContainer1", "Variable2", ""},
@@ -109,20 +125,33 @@ local tVarTypes = {
 	UP = 		    {29, nil, nil, ""},
 	DOWN = 		    {30, nil, nil, ""},
 	STOP = 			{31, nil, nil, ""},
-	IR_SEND =		{32, nil, nil, ""},
-	IR_RECEIVE = 	{33, "urn:upnp-org:serviceId:ArduinoIr1", "IrCode", ""},
+	IR_SEND =		{32, "urn:schemas-arduino-cc:serviceId:ArduinoIr1", "IrCode", ""},
+	IR_RECEIVE = 		{33, "urn:schemas-arduino-cc:serviceId:ArduinoIr1", "IrCode", ""},
 	FLOW = 			{34, "urn:micasaverde-com:serviceId:WaterMetering1", "Flow", "" },
 	VOLUME = 		{35, "urn:micasaverde-com:serviceId:WaterMetering1", "Volume", "0" },
 	LOCK = 		    {36, "urn:micasaverde-com:serviceId:DoorLock1", "Status", ""},
-	DUST_LEVEL =  {37, "urn:micasaverde-com:serviceId:DustSensor1", "DustLevel", ""},
-  VOLTAGE =  {38, "urn:micasaverde-com:serviceId:EnergyMetering1", "Voltage", ""},
-  CURRENT =  {39, "urn:micasaverde-com:serviceId:EnergyMetering1", "Current", ""}
+	LEVEL =  		{37, "urn:micasaverde-com:serviceId:LightSensor1", "CurrentLevel", ""}, -- Temporary fix for MOISTURE, VIBRATION, SOUND we should probably create a new devicetype/variable for this 
+	VOLTAGE =  		{38, "urn:micasaverde-com:serviceId:EnergyMetering1", "Voltage", ""},
+	CURRENT =  		{39, "urn:micasaverde-com:serviceId:EnergyMetering1", "Current", ""},
+
+	RGB =  			{40, "urn:upnp-org:serviceId:RGBController1", "SensorId", "SetColorTarget"}, -- Not implemented
+	RGBW =  		{41, "urn:upnp-org:serviceId:RGBController1", "SensorId", "SetColorTarget"}, -- Not implemented
+
+	SENSOR_ID =  	{42, "urn:micasaverde-com:serviceId:MySensor1", "SensorId", ""},
+	UNIT_PREFIX =  	{43, "urn:micasaverde-com:serviceId:MySensor1", "UnitPrefix", ""}, -- Currently unused in GUI on vera
+	HVAC_FLOW_MODE = {44, "urn:upnp-org:serviceId:HVAC_FanOperatingMode1", "Mode", "" },
+	HVAC_SETPOINT_HEAT = {45, "urn:upnp-org:serviceId:TemperatureSetpoint1_Heat", "CurrentSetpoint", "" },
+	HVAC_SETPOINT_COOL = {46, "urn:upnp-org:serviceId:TemperatureSetpoint1_Cool", "CurrentSetpoint", "" },
+	TEXT =          {47, "urn:upnp-org:serviceId:LcdText1", "LcdText", "" },	-- S_INFO. Text message to display on LCD or controller device
+	CUSTOM =        {48, "urn:micasaverde-com:serviceId:MySensor1", "Custom", "" }, -- Not implemented S_CUSTOM device type.
+	POSITION =      {49, "urn:micasaverde-com:serviceId:MySensor1", "Position", "" },  -- Not implemented  GPS position and altitude
+	IR_RECORD =     {50, "urn:schemas-arduino-cc:serviceId:ArduinoIr1", "Recording", ""}  -- S_IR_RECORD message
 }
 
 local tVeraTypes = {
 	BATTERY_DATE = 	{0, "urn:micasaverde-com:serviceId:HaDevice1", "BatteryDate", "" },
 	LAST_TRIP = 	{1, "urn:micasaverde-com:serviceId:SecuritySensor1", "LastTrip", "" },
-  LAST_UPDATE = 	{2, "urn:micasaverde-com:serviceId:HaDevice1", "LastUpdate", "" }
+	LAST_UPDATE = 	{2, "urn:micasaverde-com:serviceId:HaDevice1", "LastUpdate", "" }
 }
 
 local tInternalLookupNumType = {}
@@ -133,12 +162,12 @@ local tInternalTypes = {
  	ID_REQUEST = 	{3, nil, nil, nil},
  	ID_RESPONSE = 	{4, nil, nil, nil},
  	INCLUSION_MODE ={5, "urn:upnp-arduino-cc:serviceId:arduino1", "InclusionMode", "0"},
-  CONFIG =        {6, "urn:upnp-arduino-cc:serviceId:arduinonode1", "RelayNode", ""},
-  PING = 			{7, nil, nil, nil },
-  PING_ACK =      {8, nil, nil, nil },
-  LOG_MESSAGE =   {9, nil, nil, nil },
-  CHILDREN =  	{10, "urn:upnp-arduino-cc:serviceId:arduinonode1", "Children", "0"},
-  SKETCH_NAME    = {11, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchName", ""},
+ 	CONFIG =        {6, "urn:upnp-arduino-cc:serviceId:arduinonode1", "RelayNode", ""},
+ 	PING = 			{7, nil, nil, nil },
+ 	PING_ACK =      {8, nil, nil, nil },
+ 	LOG_MESSAGE =   {9, nil, nil, nil },
+ 	CHILDREN =  	{10, "urn:upnp-arduino-cc:serviceId:arduinonode1", "Children", "0"},
+ 	SKETCH_NAME    = {11, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchName", ""},
 	SKETCH_VERSION = {12, "urn:upnp-arduino-cc:serviceId:arduinonode1", "SketchVersion", ""},
 	REBOOT         = {13, nil, nil, nil}, 
 	GATEWAY_READY  = {14, nil, nil, nil}
@@ -163,7 +192,9 @@ local function printTable(list, i)
     return listString .. ', ' .. printTable(list, i + 1)
 end
 
-
+function string.starts(String,Start)
+   return string.sub(String,1,string.len(Start))==Start
+end
 
 local function log(text, level)
 	if(type(text) == 'table') then
@@ -192,6 +223,7 @@ function setVariableIfChanged(serviceId, name, value, deviceId)
         
     end
 end
+
 
 local function setLastUpdate(nodeDevice)
 	if (nodeDevice ~= nil) then
@@ -298,6 +330,14 @@ local function presentation(incomingData, device, childId, altId)
 	local data = incomingData[6]
 	local mode = luup.variable_get(ARDUINO_SID, "InclusionMode", ARDUINO_DEVICE)
 
+	if (mode == "1" and device ~= nil and childId ~= NODE_CHILD_ID and string.len(data)>0 and (not string.starts(data,"1."))) then
+		-- Update sensor description (device title) during inclusion mode (for already known sensors)
+		-- We ignore names starting with "1." because old sensors sent version number in payload
+		local splitted = altId:split(";")
+		local nodeId = splitted[1]
+		luup.attr_set("name", data .. " (" .. nodeId .. ")", device)
+	end
+
 	if (mode == "1" and device == nil) then
 		-- A new sensor (not created before) was presented during inclusion mode
 		if (inclusionResult[altId] == nil) then 
@@ -305,6 +345,10 @@ local function presentation(incomingData, device, childId, altId)
 			includeCount = includeCount+1;
 			setVariableIfChanged(ARDUINO_SID, "InclusionFoundCountHR", includeCount .." devices found", ARDUINO_DEVICE)
 			inclusionResult[altId] = type
+			if (childId ~= NODE_CHILD_ID and string.len(data)>0) then
+				-- save mode decription for later
+				inclusionResultTitle[altId] = data
+			end
 		end
 	elseif (mode == "0" and device ~= nil and childId == NODE_CHILD_ID) then
 		-- Store version information if this is radio node
@@ -323,7 +367,7 @@ local function processInternalMessage(incomingData, iChildId, iAltId, incomingNo
 	local varType = tInternalLookupNumType[index]
 	local var = tInternalTypes[varType]
 
-	if (varType == "VERSION" and iAltId == "0;0") then
+	if (varType == "VERSION" and iAltId == "0;255") then
 		-- Store version of Arduino Gateway
 		GATEWAY_VERSION = data
 		setVariableIfChanged(ARDUINO_SID, "ArduinoLibVersion", GATEWAY_VERSION, ARDUINO_DEVICE)
@@ -376,14 +420,21 @@ local function processInternalMessage(incomingData, iChildId, iAltId, incomingNo
 							child_devices = luup.chdev.start(ARDUINO_DEVICE)
 						end
 
-						if (childId == NODE_CHILD_ID) then
-							name = nodeId
-						else
-							name = nodeId .. ":" .. childId
-						end
 
 						-- append newly found sensor device
-						luup.chdev.append(ARDUINO_DEVICE, child_devices, altId, "Arduino " .. deviceType[4]..name, deviceType[2],deviceType[3],"","",false)
+						name = inclusionResultTitle[altId]
+						if (name == nil) then
+							if (childId == NODE_CHILD_ID) then
+								name = nodeId
+							else
+								name = childId .. " (" .. nodeId .. ")" 
+							end
+							name = "Arduino " .. deviceType[4]..name
+						else
+							name = name .. " (" .. nodeId .. ")"
+						end
+
+						luup.chdev.append(ARDUINO_DEVICE, child_devices, altId, name, deviceType[2],deviceType[3],"","",false)
 						newDevices = newDevices + 1		
 					else 
 						log("Found unknown device type ".. deviceType ..". Inclusion aborted. Please try again.", 1)
@@ -441,7 +492,6 @@ end
 
 
 
-
 function sendCommandWithMessageType(altid, messageType, ack, variableId, value)
 	local cmd = altid..";".. msgType[messageType] .. ";" .. ack .. ";" .. variableId .. ";" .. value
 	log("Sending: " .. cmd)
@@ -490,9 +540,13 @@ function switchPower(device, newTargetValue)
 end
 
 function sendIrCommand(device, irCodeNumber)
-	sendCommand(luup.devices[device].id,"IR_SEND",irCodeNumber)
+        sendCommand(luup.devices[device].id,"IR_SEND",irCodeNumber)
 end
 
+function recordIrCode(device, irCodeNumber, newIrCodeName)
+	setVariableIfChanged(tVarTypes.IR_RECORD[2], "IrCodeName" .. irCodeNumber, newIrCodeName, device)
+	sendCommand(luup.devices[device].id,"IR_RECORD", irCodeNumber) 
+end
 
 function setDimmerLevel(device, newLoadlevelTarget)
 	sendCommand(luup.devices[device].id,"DIMMER",newLoadlevelTarget)
@@ -504,18 +558,30 @@ end
 
 
 -- Heater commands
-function SetTheNewTemp(device, NewCurrentSetpoint)
-	sendCommand(luup.devices[device].id,"HEATER",NewCurrentSetpoint)
+function SetpointHeat(device, NewCurrentSetpoint)
+	sendCommand(luup.devices[device].id,"HVAC_SETPOINT_HEAT",NewCurrentSetpoint)
 end
 
-function SetModeTarget(device, NewModeTarget)
-	sendCommand(luup.devices[device].id,"HEATER_SW",NewModeTarget)
+function SetpointCool(device, NewCurrentSetpoint)
+	sendCommand(luup.devices[device].id,"HVAC_SETPOINT_COOL",NewCurrentSetpoint)
 end
 
+function SetOperatingMode(device, NewModeTarget)
+	sendCommand(luup.devices[device].id,"HVAC_FLOW_STATE",NewModeTarget)
+end
 
+function SetFanMode(device, NewMode)
+	sendCommand(luup.devices[device].id,"HVAC_FLOW_MODE",NewMode)
+end
+
+function SetLcdText(device, NewText)
+	sendCommand(luup.devices[device].id, "TEXT", NewText)
+	setVariableIfChanged(tVarTypes.TEXT[2], tVarTypes.TEXT[3], NewText, device)
+end
 
 -- Security commands
 function setArmed(device, newArmedValue)
+	sendCommand(luup.devices[device].id,"ARMED",newArmedValue)
 	setVariableIfChanged(tVarTypes.ARMED[2], tVarTypes.ARMED[3], newArmedValue, device)
 end
 
@@ -650,7 +716,3 @@ function startup(lul_device)
 	sendCommandWithMessageType("0;0","INTERNAL",0,tonumber(tInternalTypes["VERSION"][1]),"Get Version")
 	
 end
-
-
-
-
