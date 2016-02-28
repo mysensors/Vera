@@ -139,9 +139,9 @@ local tVarTypes = {
 
 	SENSOR_ID =  	{42, "urn:micasaverde-com:serviceId:MySensor1", "SensorId", ""},
 	UNIT_PREFIX =  	{43, "urn:micasaverde-com:serviceId:MySensor1", "UnitPrefix", ""}, -- Currently unused in GUI on vera
-	HVAC_FLOW_MODE = {44, "urn:upnp-org:serviceId:HVAC_FanOperatingMode1", "Mode", "" },
+	HVAC_SETPOINT_COOL = {44, "urn:upnp-org:serviceId:TemperatureSetpoint1_Cool", "CurrentSetpoint", "" },
 	HVAC_SETPOINT_HEAT = {45, "urn:upnp-org:serviceId:TemperatureSetpoint1_Heat", "CurrentSetpoint", "" },
-	HVAC_SETPOINT_COOL = {46, "urn:upnp-org:serviceId:TemperatureSetpoint1_Cool", "CurrentSetpoint", "" },
+	HVAC_FLOW_MODE = {46, "urn:upnp-org:serviceId:HVAC_FanOperatingMode1", "Mode", "" },
 	TEXT =          {47, "urn:upnp-org:serviceId:LcdText1", "LcdText", "" },	-- S_INFO. Text message to display on LCD or controller device
 	CUSTOM =        {48, "urn:micasaverde-com:serviceId:MySensor1", "Custom", "" }, -- Not implemented S_CUSTOM device type.
 	POSITION =      {49, "urn:micasaverde-com:serviceId:MySensor1", "Position", "" },  -- Not implemented  GPS position and altitude
