@@ -558,10 +558,6 @@ end
 
 
 -- Heater commands
-function Setpoint(device, NewCurrentSetpoint)
-	sendCommand(luup.devices[device].id,"HVAC_SETPOINT_HEAT",NewCurrentSetpoint)
-end
-
 function SetpointHeat(device, NewCurrentSetpoint)
 	sendCommand(luup.devices[device].id,"HVAC_SETPOINT_HEAT",NewCurrentSetpoint)
 end

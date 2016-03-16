@@ -74,15 +74,7 @@
   			if (p ~= nil) then p.setLockStatus(lul_device, lul_settings.newTargetValue) end
   			return 4,0
   		</job>
-    </action>
-	<action>
-      	<serviceId>urn:upnp-org:serviceId:TemperatureSetpoint1</serviceId>
-      	<name>SetCurrentSetpoint</name>
-      	<job>
-      		if (p ~= nil) then p.Setpoint(lul_device, lul_settings.NewCurrentSetpoint)  end
-  			return 4,0
-  		</job>
-    </action>	
+    </action>     
     <action>
       	<serviceId>urn:upnp-org:serviceId:TemperatureSetpoint1_Heat</serviceId>
       	<name>SetCurrentSetpoint</name>
