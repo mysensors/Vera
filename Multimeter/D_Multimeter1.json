@@ -410,5 +410,5 @@
             ]
         }
     ],
-    "DeviceType": "urn:schemas-arduino-cc:device:EnergyMetering:1"
+    "DeviceType": "urn:schemas-micasaverde-com:device:EnergyMetering:1"
 }
