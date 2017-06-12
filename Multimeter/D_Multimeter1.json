@@ -122,7 +122,7 @@
                     "x": "1",
                     "ControlType": "variable",
                     "Display": {
-                        "Service": "urn:arduino-cc:serviceId:EnergyMetering1",
+                        "Service": "urn:micasaverde-com:serviceId:EnergyMetering1",
                         "Variable": "Current",
                         "Top": 80,
                         "Left": 150,
@@ -172,7 +172,7 @@
                     "x": "1",
                     "ControlType": "variable",
                     "Display": {
-                        "Service": "urn:arduino-cc:serviceId:EnergyMetering1",
+                        "Service": "urn:micasaverde-com:serviceId:EnergyMetering1",
                         "Variable": "Voltage",
                         "Top": 105,
                         "Left": 150,
@@ -299,7 +299,7 @@
                 "lang_tag": "voltage_goes_above",
                 "text": "Voltage goes above"
             },
-            "serviceId": "urn:arduino-cc:serviceId:EnergyMetering1",
+            "serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
             "norepeat": "1",
             "argumentList": [
                 {
@@ -328,7 +328,7 @@
                 "lang_tag": "voltage_goes_below",
                 "text": "Voltage goes below"
             },
-            "serviceId": "urn:arduino-cc:serviceId:EnergyMetering1",
+            "serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
             "norepeat": "1",
             "argumentList": [
                 {
@@ -357,7 +357,7 @@
                 "lang_tag": "current_goes_above",
                 "text": "Current goes above"
             },
-            "serviceId": "urn:arduino-cc:serviceId:EnergyMetering1",
+            "serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
             "norepeat": "1",
             "argumentList": [
                 {
@@ -386,7 +386,7 @@
                 "lang_tag": "current_goes_below",
                 "text": "Current goes below"
             },
-            "serviceId": "urn:arduino-cc:serviceId:EnergyMetering1",
+            "serviceId": "urn:micasaverde-com:serviceId:EnergyMetering1",
             "norepeat": "1",
             "argumentList": [
                 {
@@ -410,5 +410,5 @@
             ]
         }
     ],
-    "DeviceType": "urn:schemas-arduino-cc:device:EnergyMetering:1"
+    "DeviceType": "urn:schemas-micasaverde-com:device:EnergyMetering:1"
 }

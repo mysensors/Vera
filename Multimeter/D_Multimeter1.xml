@@ -5,13 +5,13 @@
     <minor>0</minor>
   </specVersion>
   <device>
-    <deviceType>urn:schemas-arduino-cc:device:EnergyMetering:1</deviceType>
+    <deviceType>urn:schemas-micasaverde-com:device:EnergyMetering:1</deviceType>
     <Category_Num>12</Category_Num>
 	<staticJson>D_Multimeter1.json</staticJson>
     <serviceList>
       <service>
-        <serviceType>urn:schemas-arduino-cc:service:EnergyMetering:1</serviceType>
-        <serviceId>urn:arduino-cc:serviceId:EnergyMetering1</serviceId>
+        <serviceType>urn:schemas-micasaverde-com:service:EnergyMetering:1</serviceType>
+        <serviceId>urn:micasaverde-com:serviceId:EnergyMetering1</serviceId>
         <SCPDURL>S_Multimeter1.xml</SCPDURL>
       </service>
       <service>
