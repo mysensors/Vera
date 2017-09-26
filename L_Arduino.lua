@@ -145,7 +145,8 @@ local tVarTypes = {
 	TEXT =          {47, "urn:upnp-org:serviceId:LcdText1", "LcdText", "" },	-- S_INFO. Text message to display on LCD or controller device
 	CUSTOM =        {48, "urn:micasaverde-com:serviceId:MySensor1", "Custom", "" }, -- Not implemented S_CUSTOM device type.
 	POSITION =      {49, "urn:micasaverde-com:serviceId:MySensor1", "Position", "" },  -- Not implemented  GPS position and altitude
-	IR_RECORD =     {50, "urn:schemas-arduino-cc:serviceId:ArduinoIr1", "Recording", ""}  -- S_IR_RECORD message
+	IR_RECORD =     {50, "urn:schemas-arduino-cc:serviceId:ArduinoIr1", "Recording", ""},  -- S_IR_RECORD message
+	HVAC_SETPOINT = {54, "urn:upnp-org:serviceId:TemperatureSetpoint1", "CurrentSetpoint", "" } -- Setpoint for single command HVAC
 }
 
 local tVeraTypes = {
@@ -216,6 +217,9 @@ function setVariableIfChanged(serviceId, name, value, deviceId)
     
     if ((value ~= curValue) or (curValue == nil) or (serviceId == "urn:micasaverde-com:serviceId:SceneController1")) then
         luup.variable_set(serviceId, name, value, deviceId)
+		if ((serviceId == "urn:upnp-org:serviceId:TemperatureSetpoint1_Heat") or (serviceId == "urn:upnp-org:serviceId:TemperatureSetpoint1_Cool")) then
+			luup.variable_set("urn:upnp-org:serviceId:TemperatureSetpoint1", name, value, deviceId)
+		end
         return true
         
     else
@@ -560,10 +564,14 @@ end
 -- Heater commands
 function SetpointHeat(device, NewCurrentSetpoint)
 	sendCommand(luup.devices[device].id,"HVAC_SETPOINT_HEAT",NewCurrentSetpoint)
+	sendCommand(luup.devices[device].id,"HVAC_SETPOINT",NewCurrentSetpoint)
+	luup.log("New Current SetPoint Heat " .. NewCurrentSetpoint)
 end
 
 function SetpointCool(device, NewCurrentSetpoint)
 	sendCommand(luup.devices[device].id,"HVAC_SETPOINT_COOL",NewCurrentSetpoint)
+	sendCommand(luup.devices[device].id,"HVAC_SETPOINT",NewCurrentSetpoint)
+	luup.log("New Current SetPoint Cool " .. NewCurrentSetpoint)
 end
 
 function SetOperatingMode(device, NewModeTarget)
