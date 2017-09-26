@@ -130,7 +130,7 @@ local tVarTypes = {
 	FLOW = 			{34, "urn:micasaverde-com:serviceId:WaterMetering1", "Flow", "" },
 	VOLUME = 		{35, "urn:micasaverde-com:serviceId:WaterMetering1", "Volume", "0" },
 	LOCK = 		    {36, "urn:micasaverde-com:serviceId:DoorLock1", "Status", ""},
-	LEVEL =  		{37, "urn:micasaverde-com:serviceId:LightSensor1", "CurrentLevel", ""}, -- Temporary fix for MOISTURE, VIBRATION, SOUND we should probably create a new devicetype/variable for this 
+	LEVEL =  		{37, "urn:micasaverde-com:serviceId:LightSensor1", "CurrentLevel", ""}, -- Temporary fix for MOISTURE, VIBRATION, SOUND, HVAC_SETPOINT we should probably create a new devicetype/variable for this 
 	VOLTAGE =  		{38, "urn:micasaverde-com:serviceId:EnergyMetering1", "Voltage", ""},
 	CURRENT =  		{39, "urn:micasaverde-com:serviceId:EnergyMetering1", "Current", ""},
 
