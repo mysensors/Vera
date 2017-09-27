@@ -130,7 +130,7 @@ local tVarTypes = {
 	FLOW = 			{34, "urn:micasaverde-com:serviceId:WaterMetering1", "Flow", "" },
 	VOLUME = 		{35, "urn:micasaverde-com:serviceId:WaterMetering1", "Volume", "0" },
 	LOCK = 		    {36, "urn:micasaverde-com:serviceId:DoorLock1", "Status", ""},
-	LEVEL =  		{37, "urn:micasaverde-com:serviceId:LightSensor1", "CurrentLevel", ""}, -- Temporary fix for MOISTURE, VIBRATION, SOUND we should probably create a new devicetype/variable for this 
+	LEVEL =  		{37, "urn:micasaverde-com:serviceId:LightSensor1", "CurrentLevel", ""}, -- Temporary fix for MOISTURE, VIBRATION, SOUND, HVAC_SETPOINT we should probably create a new devicetype/variable for this 
 	VOLTAGE =  		{38, "urn:micasaverde-com:serviceId:EnergyMetering1", "Voltage", ""},
 	CURRENT =  		{39, "urn:micasaverde-com:serviceId:EnergyMetering1", "Current", ""},
 
@@ -145,8 +145,7 @@ local tVarTypes = {
 	TEXT =          {47, "urn:upnp-org:serviceId:LcdText1", "LcdText", "" },	-- S_INFO. Text message to display on LCD or controller device
 	CUSTOM =        {48, "urn:micasaverde-com:serviceId:MySensor1", "Custom", "" }, -- Not implemented S_CUSTOM device type.
 	POSITION =      {49, "urn:micasaverde-com:serviceId:MySensor1", "Position", "" },  -- Not implemented  GPS position and altitude
-	IR_RECORD =     {50, "urn:schemas-arduino-cc:serviceId:ArduinoIr1", "Recording", ""},  -- S_IR_RECORD message
-	HVAC_SETPOINT = {54, "urn:upnp-org:serviceId:TemperatureSetpoint1", "CurrentSetpoint", "" } -- Setpoint for single command HVAC
+	IR_RECORD =     {50, "urn:schemas-arduino-cc:serviceId:ArduinoIr1", "Recording", ""}  -- S_IR_RECORD message
 }
 
 local tVeraTypes = {
@@ -564,13 +563,13 @@ end
 -- Heater commands
 function SetpointHeat(device, NewCurrentSetpoint)
 	sendCommand(luup.devices[device].id,"HVAC_SETPOINT_HEAT",NewCurrentSetpoint)
-	sendCommand(luup.devices[device].id,"HVAC_SETPOINT",NewCurrentSetpoint)
+	sendCommand(luup.devices[device].id,"LEVEL",NewCurrentSetpoint)
 	luup.log("New Current SetPoint Heat " .. NewCurrentSetpoint)
 end
 
 function SetpointCool(device, NewCurrentSetpoint)
 	sendCommand(luup.devices[device].id,"HVAC_SETPOINT_COOL",NewCurrentSetpoint)
-	sendCommand(luup.devices[device].id,"HVAC_SETPOINT",NewCurrentSetpoint)
+	sendCommand(luup.devices[device].id,"LEVEL",NewCurrentSetpoint)
 	luup.log("New Current SetPoint Cool " .. NewCurrentSetpoint)
 end
 
