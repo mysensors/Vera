@@ -1,129 +1,227 @@
 {
-    "flashicon": "icons\/generic_sensor.swf",
-    "imgIconBody": "",
-    "imgIconDimmable": "",
-    "imgIconTurnable": "",
-    "imgIconMin": "",
-    "imgIconMax": "",
-    "halloIconsDir": "pics/hallo",
-    "inScene": "0",
-    "DisplayStatus": {},
-    "doc_url": {
-        "doc_language": 1,
-        "doc_manual": 1,
-        "doc_version": 1,
-        "doc_platform": 0,
-        "doc_page": "sensors"
+	"default_icon"		: "https://media.vsm.net.ua/vera/icons/col2/unknown.png",
+	"state_icons"		: [
+		{
+			"img":	"https://media.vsm.net.ua/vera/icons/col2/stable.png",
+			"conditions": [
+				{
+					"service":	"urn:upnp-org:serviceId:BarometerSensor1",
+					"variable": "Forecast",
+					"operator": "==",
+					"value": "stable"
+				}
+			]
+		},
+		{
+			"img":	"https://media.vsm.net.ua/vera/icons/col2/sunny.png",
+			"conditions": [
+				{
+					"service":	"urn:upnp-org:serviceId:BarometerSensor1",
+					"variable": "Forecast",
+					"operator": "==",
+					"value": "sunny"
+				}
+			]			
+		},
+		{
+			"img":	"https://media.vsm.net.ua/vera/icons/col2/cloudy.png",
+			"conditions": [
+				{
+					"service":	"urn:upnp-org:serviceId:BarometerSensor1",
+					"variable": "Forecast",
+					"operator": "==",
+					"value": "cloudy"
+				}
+			]			
+		},
+		{
+			"img":	"https://media.vsm.net.ua/vera/icons/col2/unstable.png",
+			"conditions": [
+				{
+					"service":	"urn:upnp-org:serviceId:BarometerSensor1",
+					"variable": "Forecast",
+					"operator": "==",
+					"value": "unstable"
+				}
+			]			
+		},
+		{
+			"img":	"https://media.vsm.net.ua/vera/icons/col2/thunderstorm.png",
+			"conditions": [
+				{
+					"service":	"urn:upnp-org:serviceId:BarometerSensor1",
+					"variable": "Forecast",
+					"operator": "==",
+					"value": "thunderstorm"
+				}
+			]			
+		},
+		{
+			"img":	"https://media.vsm.net.ua/vera/icons/col2/unknown.png",
+			"conditions": [
+				{
+					"service":	"urn:upnp-org:serviceId:BarometerSensor1",
+					"variable": "Forecast",
+					"operator": "==",
+					"value": "unknown"
+				}
+			]			
+		}
+	],
+	"imgIconBody"		: "",
+	"imgIconDimmable"	: "",
+	"imgIconTurnable"	: "",
+	"imgIconMin"		: "",
+	"imgIconMax"		: "",
+	"halloIconsDir"		: "pics/hallo",
+	"x": "3",
+	"y": "4",
+	"inScene": "0",
+	"DisplayStatus": {},
+	"doc_url": {
+		"doc_language": 1,
+		"doc_manual": 1,
+		"doc_version": 1,
+		"doc_platform": 0,
+		"doc_page": "sensors"
     },
-    "Tabs": [
-        {
-            "Label": {
-                "lang_tag": "tabname_control",
+	"Tabs":[
+		{
+			"Label": {
+				"lang_tag": "tabname_control",
                 "text": "Information"
             },
             "Position": "0",
             "TabType": "flash",
-            "SceneGroup": [
+			"SceneGroup": [
                 {
                     "id": "1",
-                    "top": "1.5",
-                    "left": "0",
-                    "x": "2",
-                    "y": "2"
-                }
-            ],
-            "ControlGroup": [
-                {
-                    "id": "1",
-                    "scenegroup": "1",
-                    "type": "info"
-                },
-                {
-                    "id": "2",
-                    "scenegroup": "1",
-                    "type": "info"
-                }
-            ],
-            "Control": [
-                {
-                    "ControlGroup": "1",
-                    "ControlPair": "1",
-                    "ControlHeader": "1",
-                    "top": "0",
-                    "left": "0",
-                    "x": "1.25",
-                    "ControlType": "label",
-                    "Label": {
-                        "lang_tag": "pressure",
-                        "text": "Pressure"
-                    },
-                    "Display": {
-                        "Top": 30,
-                        "Left": 50,
-                        "Width": 75,
-                        "Height": 20 
-                    }
-                },
-                {
-                    "ControlGroup": "1",
-                    "ControlPair": "1",
-                    "ControlHeader": "1",
-                    "top": "0",
-                    "left": "1.25",
-                    "x": "0.75",
-                    "ControlType": "variable",
-                    "Display": {
-                        "Service": "urn:upnp-org:serviceId:BarometerSensor1",
-                        "Variable": "CurrentPressure",
-                        "Top": 30,
-                        "Left": 150,
-                        "Width": 25,
-                        "Height": 20
-                    }
-                },
-                {
-                    "ControlType": "label",
-                    "Label": {
-                        "lang_tag": "pressure_unit",
-                        "text": "hPa"
-                    },
-                    "Display": {
-                        "Top": 30,
-                        "Left": 200,
-                        "Width": 25,
-                        "Height": 20 
-                    }
-                },
-                {
-                    "ControlType": "label",
-                    "Label": {
-                        "lang_tag": "forecast",
-                        "text": "Forecast"
-                    },
-                    "Display": {
-                        "Top": 55,
-                        "Left": 50,
-                        "Width": 75,
-                        "Height": 20 
-                    }
-                },
-                {
-                    "ControlGroup": "2",
                     "top": "1",
                     "left": "0",
                     "x": "2",
-                    "ControlType": "variable",
-                    "Display": {
-                        "Service": "urn:upnp-org:serviceId:BarometerSensor1",
-                        "Variable": "Forecast",
-                        "Top": 55,
-                        "Left": 150,
-                        "Width": 100,
-                        "Height": 20 
-                    }
+                    "y": "3"
                 }
-            ]
-        },
+            ],
+			"ControlGroup": [
+				{
+					"id": "1",
+					"scenegroup": "1",
+					"type": "info"
+				}			
+			],
+			"Control": [
+				{
+					"ControlGroup": 1,
+					"ControlType": "spacer",
+					"HorizontalMultiplier": "0.7"
+				},			
+				{
+					"ControlGroup": "1",
+					"ControlPair": "1",
+					"ControlHeader": "1",
+					"ControlType": "label",
+					"top": 0,
+					"left": 0,
+					"x": 1.25,
+					"Label": {
+						"lang_tag": "Pressure",
+						"text": "Pressure:"
+					},
+					"Display": {
+						"Top": 30,
+						"Left": 50,
+						"Width": 75,
+						"Height": 20						
+					}
+				},
+				{
+					"ControlGroup": "1",
+					"ControlPair": "1",
+					"ControlHeader": "1",
+					"ControlType": "variable",
+					"top": "0",
+					"left": "1.25",
+					"x": "0.75",
+					"Display": {
+						"Service": "urn:upnp-org:serviceId:BarometerSensor1",
+						"Variable": "CurrentPressure",
+						"Top": 30,
+						"Left": 150,
+						"Width": 25,
+						"Height": 20
+					}
+				},
+				{
+					"ControlGroup": 1,
+					"ControlType": "spacer",
+					"HorizontalMultiplier": "0.3"
+				},
+				{
+					"ControlGroup": "1",
+					"ControlPair": "1",
+					"ControlHeader": "1",
+					"ControlType": "label",
+					"Label": {
+						"lang_tag": "pressure_unit",
+						"text": "hPa"
+					},
+					"Display": {
+						"Top": 30,
+						"Left": 200,
+						"Width": 25,
+						"Height": 20
+					}
+				},
+				{
+					"ControlGroup": 1,
+					"ControlType": "line_break"
+				},
+				{
+					"ControlGroup": 1,
+					"ControlType": "spacer",
+					"HorizontalMultiplier": "0.7"
+				},
+				{
+					"ControlGroup": "1",
+					"ControlPair": "1",
+					"ControlHeader": "1",
+					"ControlType": "label",
+					"Label": {
+						"lang_tag": "forecast",
+						"text": "Forecast:"
+					},
+					"Display": {
+						"Top": 55,
+						"Left": 50,
+						"Width": 100,
+						"Height": 20 
+					}
+				},
+				{
+					"ControlGroup": 1,
+					"ControlType": "spacer",
+					"HorizontalMultiplier": "0.3"
+				},				
+				{
+					"ControlGroup": "1",
+					"ControlPair": "1",
+					"ControlHeader": "1",
+					"top": "1",
+					"left": "0",
+					"x": "2",
+					"ControlType": "variable",
+					"Display": {
+						"Service": "urn:upnp-org:serviceId:BarometerSensor1",
+						"Variable": "Forecast",
+						"Top": 55,
+						"Left": 150,
+						"Width": 100,
+						"Height": 20
+					}
+				}
+				
+			]
+		},
         {
             "Label": {
                 "lang_tag": "advanced",
@@ -153,8 +251,8 @@
             "TabType": "javascript",
             "ScriptName": "shared.js",
             "Function": "device_notifications"
-        }
-    ],
+        }		
+	],
     "eventList2": [
         {
             "id": 1,
@@ -281,5 +379,5 @@
             ]
         }
     ],
-    "DeviceType": "urn:schemas-micasaverde-com:device:BarometerSensor:1"
+	"device_type": "urn:schemas-micasaverde-com:device:BarometerSensor:1"
 }
